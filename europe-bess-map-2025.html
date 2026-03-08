@@ -14,10 +14,10 @@
         .legend { display: flex; gap: 18px; padding: 8px 0 4px 16px; }
         .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #1A1A2E; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .footer { display: flex; justify-content: space-between; align-items: flex-end; padding: 6px 16px 12px 16px; }
+        .footer { display: flex; justify-content: space-between; align-items: flex-end; padding: 6px 0 12px 16px; }
         .source { font-size: 10px; color: #8C8CAA; line-height: 1.4; }
         .source-note { font-size: 9px; color: #AAAACC; }
-        .brand { font-size: 16px; font-weight: 700; color: #1A1A2E; letter-spacing: 3px; }
+        .brand { font-size: 16px; font-weight: 700; color: #1A1A2E; letter-spacing: 3px; white-space: nowrap; }
         svg { display: block; }
         .country { stroke: white; stroke-width: 0.8px; }
         .country-deal { fill: #D6DFED; }
@@ -59,7 +59,7 @@
                 <div class="source">Source: Modo Energy</div>
                 <div class="source-note">Circle size proportional to capacity (MW). For portfolio deals, location reflects company HQ.</div>
             </div>
-            <div class="brand">MODO ENERGY</div>
+            <div class="brand">MODOENERGY</div>
         </div>
     </div>
     <script>
@@ -70,9 +70,9 @@
         const height = 480;
         
         const projection = d3.geoMercator()
-            .center([12, 52])
-            .scale(580)
-            .translate([width / 2, height / 2]);
+            .center([10, 52])
+            .scale(600)
+            .translate([width / 2 - 20, height / 2]);
         
         const path = d3.geoPath().projection(projection);
         
@@ -159,7 +159,12 @@
                     const containerRect = document.querySelector('.container').getBoundingClientRect();
                     const x = event.clientX - containerRect.left;
                     const y = event.clientY - containerRect.top;
-                    tooltip.style("left", (x + 15) + "px").style("top", (y - 10) + "px");
+                    const tooltipEl = document.getElementById('tooltip');
+                    const tw = tooltipEl.offsetWidth;
+                    // Always right-align: tooltip appears to the left of cursor if near right edge
+                    let left = x + 15;
+                    if (left + tw > 800) { left = x - tw - 15; }
+                    tooltip.style("left", left + "px").style("top", (y - 10) + "px");
                 })
                 .on("mouseout", function() {
                     d3.select(this).attr("opacity", 0.85).attr("stroke-width", "0.6px");
