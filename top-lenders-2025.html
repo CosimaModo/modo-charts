@@ -48,8 +48,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var tip = document.getElementById('tooltip');
   document.querySelectorAll('.bar-seg').forEach(function(el){
     el.addEventListener('mouseenter', function(e){
-      tip.innerHTML = '<span class="tt-sponsor">' + el.dataset.sponsor + '</span><br>'
-        + '<span class="tt-mw">' + el.dataset.deal + ' \u2014 ' + el.dataset.mw + ' MW</span>';
+      tip.innerHTML = '<span class="tt-mw">' + el.dataset.deal + ' \u2014 ' + el.dataset.mw + ' MW</span>';
       tip.style.display = 'block';
     });
     el.addEventListener('mousemove', function(e){
