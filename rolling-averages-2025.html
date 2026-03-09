@@ -1,152 +1,160 @@
 <html>
-<head><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"><meta charset="utf-8" /></head>
+<head>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', Arial, sans-serif; background: white; }
+  .chart-wrapper { width: 100%; overflow: hidden; }
+  .chart-header { padding: 16px 20px 4px; }
+  .chart-title { font-size: 18px; font-weight: 700; color: #1A1A2E; line-height: 1.3; }
+  .chart-subtitle { font-size: 13px; color: #8C8CAA; margin-top: 4px; }
+  .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .chart-footer {
+    padding: 8px 20px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .chart-source { font-size: 10px; color: #8C8CAA; line-height: 1.5; }
+  .chart-notes { font-size: 9px; color: #AAAACC; }
+  .chart-logo {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A2E;
+    letter-spacing: 4px;
+    white-space: nowrap;
+  }
+</style>
+</head>
 <body>
+<div class="chart-wrapper">
+  <div class="chart-header">
+    <div class="chart-title">European BESS deals grew larger and longer in 2025</div>
+    <div class="chart-subtitle">Average project capacity (MW, bars) and duration (hours, line) per quarter</div>
+  </div>
+  <div class="chart-scroll">
+    <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+    <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.1.min.js" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" crossorigin="anonymous"></script>
+    <div id="rollingaverages2025" style="height:380px; min-width:700px;"></div>
+    <script type="text/javascript">
+      window.PLOTLYENV=window.PLOTLYENV || {};
+      if (document.getElementById("rollingaverages2025")) {
+        Plotly.newPlot("rollingaverages2025", [
+          {
+            "x": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+            "y": [538, 40, 70, 112, 232, 152, 380, 227],
+            "text": ["6 deals", "4 deals", "3 deals", "12 deals", "8 deals", "7 deals", "14 deals", "25 deals"],
+            "hovertemplate": "<b>%{x}</b><br>Average capacity: %{y} MW<br><span style='color:#aaa'>%{text}</span><extra></extra>",
+            "marker": {"color": "#B8CCE4", "line": {"width": 0}},
+            "name": "Average capacity (MW)",
+            "yaxis": "y",
+            "type": "bar"
+          },
+          {
+            "x": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+            "y": [2.0, 3.0, 2.0, 2.2, 2.5, 2.7, 2.6, 2.8],
+            "text": ["4 with data", "2 with data", "1 with data", "10 with data", "6 with data", "7 with data", "12 with data", "21 with data"],
+            "hovertemplate": "<b>%{x}</b><br>Average duration: %{y:.1f} hrs<br><span style='color:#aaa'>%{text}</span><extra></extra>",
+            "line": {"color": "#4472C4", "width": 2.5},
+            "marker": {"color": "#4472C4", "size": 7},
+            "mode": "lines+markers",
+            "name": "Average duration (hrs)",
+            "yaxis": "y2",
+            "type": "scatter"
+          }
+        ], {
+          "font": {"family": "DM Sans, Arial, sans-serif", "size": 12, "color": "#1A1A2E"},
+          "legend": {
+            "font": {"size": 11, "color": "#1A1A2E"},
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.02,
+            "xanchor": "left",
+            "x": 0.0,
+            "traceorder": "normal",
+            "itemsizing": "constant",
+            "bgcolor": "rgba(0,0,0,0)"
+          },
+          "xaxis": {
+            "tickfont": {"size": 11, "color": "#1A1A2E"},
+            "showgrid": false,
+            "showline": false,
+            "tickangle": -45
+          },
+          "yaxis": {
+            "showgrid": true,
+            "gridcolor": "rgba(200,200,220,0.2)",
+            "showline": false,
+            "zeroline": false,
+            "showticklabels": true,
+            "tickfont": {"size": 10, "color": "#8C8CAA"},
+            "range": [0, 680],
+            "dtick": 100
+          },
+          "yaxis2": {
+            "showgrid": false,
+            "showline": false,
+            "zeroline": false,
+            "showticklabels": true,
+            "tickfont": {"size": 10, "color": "#4472C4"},
+            "range": [0, 6],
+            "dtick": 1,
+            "ticksuffix": "h",
+            "overlaying": "y",
+            "side": "right"
+          },
+          "margin": {"l": 40, "r": 40, "t": 30, "b": 50},
+          "hoverlabel": {
+            "font": {"family": "DM Sans, Arial, sans-serif", "size": 13, "color": "white"},
+            "bgcolor": "#1A1A2E",
+            "bordercolor": "rgba(0,0,0,0)",
+            "namelength": -1
+          },
+          "barmode": "group",
+          "paper_bgcolor": "white",
+          "plot_bgcolor": "white",
+          "height": 380,
+          "bargap": 0.35,
+          "annotations": [
+            {
+              "x": "Q1 2024",
+              "y": 538,
+              "yref": "y",
+              "text": "<span style='color:#8C8CAA;'>Largest: Sosteneo / Enel Libra<br>1,700 MW</span>",
+              "showarrow": true,
+              "arrowhead": 0,
+              "arrowcolor": "#CCCCDD",
+              "arrowwidth": 1,
+              "ax": 0,
+              "ay": -40,
+              "font": {"family": "DM Sans, Arial, sans-serif", "size": 9, "color": "#8C8CAA"}
+            },
+            {
+              "x": "Q3 2025",
+              "y": 380,
+              "yref": "y",
+              "text": "<span style='color:#8C8CAA;'>Largest: Thorpe Marsh<br>1,450 MW</span>",
+              "showarrow": true,
+              "arrowhead": 0,
+              "arrowcolor": "#CCCCDD",
+              "arrowwidth": 1,
+              "ax": 0,
+              "ay": -40,
+              "font": {"family": "DM Sans, Arial, sans-serif", "size": 9, "color": "#8C8CAA"}
+            }
+          ]
+        }, {"displayModeBar": false, "displaylogo": false, "responsive": true});
+      };
+    </script>
+  </div>
+  <div class="chart-footer">
     <div>
-        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.1.min.js" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" crossorigin="anonymous"></script>
-        <div id="rollingaverages2025" class="plotly-graph-div" style="height:480px; width:800px;"></div>
-        <script type="text/javascript">
-            window.PLOTLYENV=window.PLOTLYENV || {};
-            if (document.getElementById("rollingaverages2025")) {
-                Plotly.newPlot("rollingaverages2025", [
-                    {
-                        "x": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
-                        "y": [538, 40, 70, 112, 232, 152, 380, 227],
-                        "text": ["6 deals", "4 deals", "3 deals", "12 deals", "8 deals", "7 deals", "14 deals", "25 deals"],
-                        "hovertemplate": "<b>%{x}</b><br>Average capacity: %{y} MW<br><span style='color:#aaa'>%{text}</span><extra></extra>",
-                        "marker": {"color": "#B8CCE4", "line": {"width": 0}},
-                        "name": "Average capacity (MW)",
-                        "yaxis": "y",
-                        "type": "bar"
-                    },
-                    {
-                        "x": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
-                        "y": [2.0, 3.0, 2.0, 2.2, 2.5, 2.7, 2.6, 2.8],
-                        "text": ["4 with data", "2 with data", "1 with data", "10 with data", "6 with data", "7 with data", "12 with data", "21 with data"],
-                        "hovertemplate": "<b>%{x}</b><br>Average duration: %{y:.1f} hrs<br><span style='color:#aaa'>%{text}</span><extra></extra>",
-                        "line": {"color": "#4472C4", "width": 2.5},
-                        "marker": {"color": "#4472C4", "size": 7},
-                        "mode": "lines+markers",
-                        "name": "Average duration (hrs)",
-                        "yaxis": "y2",
-                        "type": "scatter"
-                    }
-                ], {
-                    "font": {"family": "DM Sans, Arial, sans-serif", "size": 12, "color": "#1A1A2E"},
-                    "legend": {
-                        "font": {"size": 11, "color": "#1A1A2E"},
-                        "orientation": "h",
-                        "yanchor": "bottom",
-                        "y": 1.02,
-                        "xanchor": "left",
-                        "x": 0.0,
-                        "traceorder": "normal",
-                        "itemsizing": "constant",
-                        "bgcolor": "rgba(0,0,0,0)"
-                    },
-                    "title": {
-                        "font": {"family": "DM Sans, Arial, sans-serif", "size": 18, "color": "#1A1A2E"},
-                        "text": "<b>European BESS deals grew larger and longer in 2025</b><br><span style=\"font-size:13px; color:#8C8CAA;\">Average project capacity (MW, bars) and duration (hours, line) per quarter</span>",
-                        "x": 0.02,
-                        "xanchor": "left",
-                        "y": 0.95,
-                        "yanchor": "top"
-                    },
-                    "xaxis": {
-                        "tickfont": {"size": 11, "color": "#1A1A2E"},
-                        "showgrid": false,
-                        "showline": false,
-                        "tickangle": -45
-                    },
-                    "yaxis": {
-                        "showgrid": true,
-                        "gridcolor": "rgba(200,200,220,0.2)",
-                        "showline": false,
-                        "zeroline": false,
-                        "showticklabels": true,
-                        "tickfont": {"size": 10, "color": "#8C8CAA"},
-                        "range": [0, 680],
-                        "dtick": 100
-                    },
-                    "yaxis2": {
-                        "showgrid": false,
-                        "showline": false,
-                        "zeroline": false,
-                        "showticklabels": true,
-                        "tickfont": {"size": 10, "color": "#4472C4"},
-                        "range": [0, 6],
-                        "dtick": 1,
-                        "ticksuffix": "h",
-                        "overlaying": "y",
-                        "side": "right"
-                    },
-                    "margin": {"l": 40, "r": 40, "t": 100, "b": 100},
-                    "hoverlabel": {
-                        "font": {"family": "DM Sans, Arial, sans-serif", "size": 13, "color": "white"},
-                        "bgcolor": "#1A1A2E",
-                        "bordercolor": "rgba(0,0,0,0)",
-                        "namelength": -1
-                    },
-                    "barmode": "group",
-                    "paper_bgcolor": "white",
-                    "plot_bgcolor": "white",
-                    "height": 480,
-                    "width": 800,
-                    "bargap": 0.35,
-                    "annotations": [
-                        {
-                            "x": "Q1 2024",
-                            "y": 538,
-                            "yref": "y",
-                            "text": "<span style='color:#8C8CAA;'>Largest: Sosteneo / Enel Libra<br>1,700 MW</span>",
-                            "showarrow": true,
-                            "arrowhead": 0,
-                            "arrowcolor": "#CCCCDD",
-                            "arrowwidth": 1,
-                            "ax": 0,
-                            "ay": -40,
-                            "font": {"family": "DM Sans, Arial, sans-serif", "size": 9, "color": "#8C8CAA"}
-                        },
-                        {
-                            "x": "Q3 2025",
-                            "y": 380,
-                            "yref": "y",
-                            "text": "<span style='color:#8C8CAA;'>Largest: Thorpe Marsh<br>1,450 MW</span>",
-                            "showarrow": true,
-                            "arrowhead": 0,
-                            "arrowcolor": "#CCCCDD",
-                            "arrowwidth": 1,
-                            "ax": 0,
-                            "ay": -40,
-                            "font": {"family": "DM Sans, Arial, sans-serif", "size": 9, "color": "#8C8CAA"}
-                        },
-                        {
-                            "align": "left",
-                            "font": {"color": "#8C8CAA", "family": "DM Sans, Arial, sans-serif", "size": 10},
-                            "showarrow": false,
-                            "text": "Source: Modo Energy<br><span style=\"font-size:9px; color:#AAAACC;\">Notes: Excludes platform equity investments. Q2 and Q3 2024 averages based on 2-3 data points.</span>",
-                            "x": 0.0,
-                            "xanchor": "left",
-                            "xref": "paper",
-                            "y": -0.28,
-                            "yanchor": "bottom",
-                            "yref": "paper"
-                        },
-                        {
-                            "font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 16},
-                            "showarrow": false,
-                            "text": "<b>M O D O E N E R G Y</b>",
-                            "x": 0.98,
-                            "xanchor": "right",
-                            "xref": "paper",
-                            "y": -0.28,
-                            "yanchor": "bottom",
-                            "yref": "paper"
-                        }
-                    ]
-                }, {"displayModeBar": false, "displaylogo": false, "responsive": true});
-            };
-        </script>
+      <div class="chart-source">Source: Modo Energy</div>
+      <div class="chart-notes">Notes: Excludes platform equity investments. Q2 and Q3 2024 averages based on 2-3 data points.</div>
     </div>
+    <div class="chart-logo">MODO ENERGY</div>
+  </div>
+</div>
 </body>
 </html>
