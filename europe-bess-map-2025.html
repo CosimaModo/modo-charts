@@ -134,7 +134,16 @@
 {name:"Elsewedy Electric 50MW/100MWh Greece BESS",lat:38.3167,lon:23.6333,country:"Greece",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-01-20"}
 ];
         const dealCountryNames = new Set(["United Kingdom", "Germany", "France", "Italy", "Spain", "Netherlands", "Poland", "Finland", "Romania", "Greece", "Denmark", "Lithuania", "Belgium"]);
-        
+
+        // Pre-compute radius from MW string BEFORE any async code
+        const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
+        const maxMW = Math.max(...deals.map(d => parseMW(d.mw))) || 1;
+        deals.forEach(d => {
+            const mwVal = parseMW(d.mw);
+            d.radius = mwVal > 0 ? 4 + (Math.sqrt(mwVal / maxMW) * 24) : 5;
+            d.capacity = d.mw || "Undisclosed";
+        });
+
         const width = 800;
         const height = 480;
         
@@ -207,17 +216,7 @@
                 })
                 .attr("d", path);
             
-            // Compute radius from MW string using sqrt scale
-            const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
-            const maxMW = Math.max(...deals.map(d => parseMW(d.mw)));
-            const radiusScale = d3.scaleSqrt().domain([0, maxMW]).range([4, 28]);
-            deals.forEach(d => {
-                const mwVal = parseMW(d.mw);
-                d.radius = mwVal > 0 ? radiusScale(mwVal) : 5;
-                d.capacity = d.mw || "Undisclosed";
-            });
-
-            // Draw deal bubbles (sorted so smaller ones are on top)
+            // Draw deal bubbles (sorted so smaller ones are on top — radius already computed above)
             const sortedDeals = [...deals].sort((a, b) => b.radius - a.radius);
 
             mapGroup.selectAll(".deal-bubble")
