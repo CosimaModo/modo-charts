@@ -30,8 +30,8 @@
 <body>
 <div class="chart-wrapper">
   <div class="chart-header">
-    <div class="chart-title">European BESS deals grew larger and longer in 2025</div>
-    <div class="chart-subtitle">Average project capacity (MW, bars) and duration (hours, line) per quarter</div>
+    <div class="chart-title">Average project size of recorded deals increased by 468% since Q2 2024</div>
+    <div class="chart-subtitle">Average project capacity (MW, bars) and duration (hours, line) per quarter. Q1 2024 treated as outlier.</div>
   </div>
   <div class="chart-scroll">
     <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
@@ -46,6 +46,7 @@
             "y": [538, 40, 70, 112, 232, 152, 380, 227],
             "text": ["6 deals", "4 deals", "3 deals", "12 deals", "8 deals", "7 deals", "14 deals", "25 deals"],
             "hovertemplate": "<b>%{x}</b><br>Average capacity: %{y} MW<br><span style='color:#aaa'>%{text}</span><extra></extra>",
+            "textposition": "none",
             "marker": {"color": "#B8CCE4", "line": {"width": 0}},
             "name": "Average capacity (MW)",
             "yaxis": "y",
@@ -83,13 +84,12 @@
             "tickangle": -45
           },
           "yaxis": {
-            "showgrid": true,
-            "gridcolor": "rgba(200,200,220,0.2)",
+            "showgrid": false,
             "showline": false,
             "zeroline": false,
             "showticklabels": true,
             "tickfont": {"size": 10, "color": "#8C8CAA"},
-            "range": [0, 680],
+            "range": [0, 600],
             "dtick": 100
           },
           "yaxis2": {
@@ -104,7 +104,7 @@
             "overlaying": "y",
             "side": "right"
           },
-          "margin": {"l": 40, "r": 40, "t": 30, "b": 50},
+          "margin": {"l": 40, "r": 40, "t": 50, "b": 50},
           "hoverlabel": {
             "font": {"family": "DM Sans, Arial, sans-serif", "size": 13, "color": "white"},
             "bgcolor": "#1A1A2E",
@@ -121,26 +121,20 @@
               "x": "Q1 2024",
               "y": 538,
               "yref": "y",
+              "yanchor": "bottom",
+              "yshift": 8,
               "text": "<span style='color:#8C8CAA;'>Largest: Sosteneo / Enel Libra<br>1,700 MW</span>",
-              "showarrow": true,
-              "arrowhead": 0,
-              "arrowcolor": "#CCCCDD",
-              "arrowwidth": 1,
-              "ax": 0,
-              "ay": -40,
+              "showarrow": false,
               "font": {"family": "DM Sans, Arial, sans-serif", "size": 9, "color": "#8C8CAA"}
             },
             {
               "x": "Q3 2025",
               "y": 380,
               "yref": "y",
+              "yanchor": "bottom",
+              "yshift": 8,
               "text": "<span style='color:#8C8CAA;'>Largest: Thorpe Marsh<br>1,450 MW</span>",
-              "showarrow": true,
-              "arrowhead": 0,
-              "arrowcolor": "#CCCCDD",
-              "arrowwidth": 1,
-              "ax": 0,
-              "ay": -40,
+              "showarrow": false,
               "font": {"family": "DM Sans, Arial, sans-serif", "size": 9, "color": "#8C8CAA"}
             }
           ]
