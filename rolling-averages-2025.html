@@ -11,23 +11,23 @@
                 Plotly.newPlot("rollingaverages2025", [
                     {
                         "x": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
-                        "y": [99, 48, 70, 88, 280, 125, 325, 200],
+                        "y": [538, 40, 70, 112, 232, 152, 380, 227],
                         "text": ["6 deals", "4 deals", "3 deals", "12 deals", "8 deals", "7 deals", "14 deals", "25 deals"],
-                        "hovertemplate": "<b>%{x}</b><br>Median capacity: %{y} MW<br><span style='color:#aaa'>%{text}</span><extra></extra>",
+                        "hovertemplate": "<b>%{x}</b><br>Average capacity: %{y} MW<br><span style='color:#aaa'>%{text}</span><extra></extra>",
                         "marker": {"color": "#B8CCE4", "line": {"width": 0}},
-                        "name": "Median capacity (MW)",
+                        "name": "Average capacity (MW)",
                         "yaxis": "y",
                         "type": "bar"
                     },
                     {
                         "x": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
-                        "y": [2.0, 3.0, 2.0, 2.0, 2.0, 2.2, 2.0, 2.0],
+                        "y": [2.0, 3.0, 2.0, 2.2, 2.5, 2.7, 2.6, 2.8],
                         "text": ["4 with data", "2 with data", "1 with data", "10 with data", "6 with data", "7 with data", "12 with data", "21 with data"],
-                        "hovertemplate": "<b>%{x}</b><br>Median duration: %{y:.1f} hrs<br><span style='color:#aaa'>%{text}</span><extra></extra>",
+                        "hovertemplate": "<b>%{x}</b><br>Average duration: %{y:.1f} hrs<br><span style='color:#aaa'>%{text}</span><extra></extra>",
                         "line": {"color": "#4472C4", "width": 2.5},
                         "marker": {"color": "#4472C4", "size": 7},
                         "mode": "lines+markers",
-                        "name": "Median duration (hrs)",
+                        "name": "Average duration (hrs)",
                         "yaxis": "y2",
                         "type": "scatter"
                     }
@@ -46,7 +46,7 @@
                     },
                     "title": {
                         "font": {"family": "DM Sans, Arial, sans-serif", "size": 18, "color": "#1A1A2E"},
-                        "text": "<b>European BESS deals grew larger but not longer in 2025</b><br><span style=\"font-size:13px; color:#8C8CAA;\">Median project capacity (MW, bars) and duration (hours, line) per quarter</span>",
+                        "text": "<b>European BESS deals grew larger and longer in 2025</b><br><span style=\"font-size:13px; color:#8C8CAA;\">Average project capacity (MW, bars) and duration (hours, line) per quarter</span>",
                         "x": 0.02,
                         "xanchor": "left",
                         "y": 0.95,
@@ -65,7 +65,7 @@
                         "zeroline": false,
                         "showticklabels": true,
                         "tickfont": {"size": 10, "color": "#8C8CAA"},
-                        "range": [0, 420],
+                        "range": [0, 680],
                         "dtick": 100
                     },
                     "yaxis2": {
@@ -95,10 +95,10 @@
                     "bargap": 0.35,
                     "annotations": [
                         {
-                            "x": "Q1 2025",
-                            "y": 280,
+                            "x": "Q1 2024",
+                            "y": 538,
                             "yref": "y",
-                            "text": "<span style='color:#8C8CAA;'>Largest: Zenob\u0113 Eccles<br>400 MW</span>",
+                            "text": "<span style='color:#8C8CAA;'>Largest: Sosteneo / Enel Libra<br>1,700 MW</span>",
                             "showarrow": true,
                             "arrowhead": 0,
                             "arrowcolor": "#CCCCDD",
@@ -109,7 +109,7 @@
                         },
                         {
                             "x": "Q3 2025",
-                            "y": 325,
+                            "y": 380,
                             "yref": "y",
                             "text": "<span style='color:#8C8CAA;'>Largest: Thorpe Marsh<br>1,450 MW</span>",
                             "showarrow": true,
@@ -124,7 +124,7 @@
                             "align": "left",
                             "font": {"color": "#8C8CAA", "family": "DM Sans, Arial, sans-serif", "size": 10},
                             "showarrow": false,
-                            "text": "Source: Modo Energy<br><span style=\"font-size:9px; color:#AAAACC;\">Notes: Excludes platform equity investments. Q2 and Q3 2024 duration medians based on 1-2 data points.</span>",
+                            "text": "Source: Modo Energy<br><span style=\"font-size:9px; color:#AAAACC;\">Notes: Excludes platform equity investments. Q2 and Q3 2024 averages based on 2-3 data points.</span>",
                             "x": 0.0,
                             "xanchor": "left",
                             "xref": "paper",
