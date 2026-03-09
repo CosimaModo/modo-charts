@@ -1,35 +1,868 @@
-<!DOCTYPE html><html><head><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 body { margin:0; padding:20px 24px; font-family: DM Sans, Arial, sans-serif; background:white; color:#1A1A2E; }
-.title { font-size:18px; font-weight:700; margin-bottom:2px; }
-.subtitle { font-size:13px; color:#8C8CAA; margin-bottom:14px; }
+.title { font-size:22px; font-weight:400; margin-bottom:4px; line-height:1.3; }
+.subtitle { font-size:14px; color:#666; margin-bottom:14px; }
+.search-box { margin-bottom:12px; }
+.search-box input { width:180px; padding:6px 10px; font-size:12px; font-family:DM Sans, Arial, sans-serif; border:1px solid #ddd; border-radius:4px; outline:none; color:#333; }
+.search-box input::placeholder { color:#999; }
 table { border-collapse:collapse; width:100%; font-size:11px; }
-th { background:#1A1A2E; color:white; text-align:left; padding:8px 6px; font-weight:600; font-size:11px; border:none; vertical-align:top; }
-th input { width:92%; padding:3px 4px; margin-top:4px; font-size:10px; font-family:DM Sans, Arial, sans-serif; border:1px solid #555; border-radius:3px; background:rgba(255,255,255,0.12); color:white; outline:none; }
-th input::placeholder { color:rgba(255,255,255,0.45); }
-td { padding:6px; border-bottom:1px solid #E8E8F0; font-size:10.5px; }
+th { background:#555; color:white; text-align:left; padding:10px 8px; font-weight:600; font-size:11px; border:none; white-space:nowrap; }
+th:first-child { border-radius: 4px 0 0 0; }
+th:last-child { border-radius: 0 4px 0 0; }
+td { padding:8px 8px; border-bottom:1px solid #f0f0f0; font-size:11px; vertical-align:middle; }
+tr:hover td { background:#f0f4ff !important; }
+.mw-bar-container { display:flex; align-items:center; gap:6px; min-width:120px; }
+.mw-bar { height:14px; background:#4472C4; border-radius:2px; min-width:1px; }
+.mw-label { font-size:10px; font-weight:600; white-space:nowrap; color:#333; }
 .footer { display:flex; justify-content:space-between; align-items:flex-end; margin-top:16px; font-size:10px; color:#8C8CAA; }
 .footer .logo { font-size:16px; font-weight:700; color:#1A1A2E; letter-spacing:5px; }
 .notes { font-size:9px; color:#AAAACC; }
+.value-cell { text-align:right; font-variant-numeric: tabular-nums; }
 </style>
 <script>
 function filterTable(){
-  var table=document.getElementById("t1");
-  var rows=table.querySelectorAll("tbody tr");
-  var inputs=table.querySelectorAll("thead input");
+  var q = document.getElementById("search").value.toLowerCase();
+  var rows = document.querySelectorAll("#t1 tbody tr");
   rows.forEach(function(row){
-    var show=true;
-    row.querySelectorAll("td").forEach(function(td,i){
-      var f=inputs[i].value.toLowerCase();
-      if(f && td.textContent.toLowerCase().indexOf(f)===-1) show=false;
-    });
-    row.style.display=show?"":"none";
+    var text = row.textContent.toLowerCase();
+    row.style.display = text.indexOf(q) !== -1 ? "" : "none";
   });
 }
 </script></head><body>
-<div class="title">Thorpe Marsh at 1,450 MW was the largest single project to close in 2025</div>
-<div class="subtitle">Top 15 projects by rated capacity</div>
-<table id="t1"><thead><tr><th>Project<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>Developer<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>Counterparty<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>Date<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>Country<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>MW<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>Duration<br><input type="text" placeholder="Filter..." oninput="filterTable()"><th>Deal value<br><input type="text" placeholder="Filter..." oninput="filterTable()"></tr></thead>
-<tbody><tr><td style="background:white;">Return Energy APG equity investment</td><td style="background:white;">Return Energy</td><td style="background:white;">APG, Dutch family offices</td><td style="background:white;">Jan 2025</td><td style="background:white;">Netherlands</td><td style="background:white;">5,000</td><td style="background:white;">-</td><td style="background:white;">€300m</td></tr><tr><td style="background:#F5F5FA;">Fidra Energy Thorpe Marsh BESS Project Finance</td><td style="background:#F5F5FA;">Fidra Energy</td><td style="background:#F5F5FA;">Octopus Energy</td><td style="background:#F5F5FA;">Sep 2025</td><td style="background:#F5F5FA;">United Kingdom</td><td style="background:#F5F5FA;">1,450</td><td style="background:#F5F5FA;">2h</td><td style="background:#F5F5FA;">€1,210m</td></tr><tr><td style="background:white;">ADS-TEC Energy 1 GW / 2 GWh BESS Southern Germany</td><td style="background:white;">ADS-TEC Energy PLC</td><td style="background:white;"></td><td style="background:white;">Sep 2025</td><td style="background:white;">Germany</td><td style="background:white;">1,000</td><td style="background:white;">2h</td><td style="background:white;">-</td></tr><tr><td style="background:#F5F5FA;">Harmony Energy Topco Private Capital Fundraise</td><td style="background:#F5F5FA;">Harmony Energy</td><td style="background:#F5F5FA;"></td><td style="background:#F5F5FA;">Aug 2025</td><td style="background:#F5F5FA;">United Kingdom</td><td style="background:#F5F5FA;">1,000</td><td style="background:#F5F5FA;">-</td><td style="background:#F5F5FA;">€349m</td></tr><tr><td style="background:white;">Statera Energy Carrington BESS</td><td style="background:white;">Statera Energy</td><td style="background:white;">EQT</td><td style="background:white;">Nov 2025</td><td style="background:white;">United Kingdom</td><td style="background:white;">680</td><td style="background:white;">-</td><td style="background:white;">-</td></tr><tr><td style="background:#F5F5FA;">Ogrezeni Solar+BESS Project Finance</td><td style="background:#F5F5FA;">Enery</td><td style="background:#F5F5FA;"></td><td style="background:#F5F5FA;">Dec 2025</td><td style="background:#F5F5FA;">Romania</td><td style="background:#F5F5FA;">534</td><td style="background:#F5F5FA;">2h</td><td style="background:#F5F5FA;">-</td></tr><tr><td style="background:white;">Luxcara Waltrop BESS Acquisition</td><td style="background:white;">BKW, Trianel</td><td style="background:white;">Luxcara</td><td style="background:white;">Jul 2025</td><td style="background:white;">Germany</td><td style="background:white;">520</td><td style="background:white;">2h</td><td style="background:white;">-</td></tr><tr><td style="background:#F5F5FA;">Project Jupiter - WBS Power sale to Prime Capital</td><td style="background:#F5F5FA;">WBS Power GmbH</td><td style="background:#F5F5FA;">Prime Capital AG, Prime Green Energy Infrastructure Fund II S.A., SICAV-RAIF, Prime Green Energy Infrastructure Fund II S.A., SICAV-RAIF (PGEIF II)</td><td style="background:#F5F5FA;">Dec 2025</td><td style="background:#F5F5FA;">Germany</td><td style="background:#F5F5FA;">500</td><td style="background:#F5F5FA;">4h</td><td style="background:#F5F5FA;">€500m</td></tr><tr><td style="background:white;">Coalburn 2 BESS - 50% Stake Sale to AIP</td><td style="background:white;">Alcemi, Copenhagen Infrastructure Partners (CIP)</td><td style="background:white;">SSE</td><td style="background:white;">Oct 2025</td><td style="background:white;">United Kingdom</td><td style="background:white;">500</td><td style="background:white;">2h</td><td style="background:white;">-</td></tr><tr><td style="background:#F5F5FA;">Terra One €150m Mezzanine Financing for 3GWh Germany BESS Pipeline</td><td style="background:#F5F5FA;">Terra One</td><td style="background:#F5F5FA;"></td><td style="background:#F5F5FA;">Sep 2025</td><td style="background:#F5F5FA;">Germany</td><td style="background:#F5F5FA;">500</td><td style="background:#F5F5FA;">6h</td><td style="background:#F5F5FA;">€750m</td></tr><tr><td style="background:white;">Green Flexibility and Hansa Battery 500 MW BESS Portfolio Acquisition</td><td style="background:white;">Hansa Battery</td><td style="background:white;">Green Flexibility</td><td style="background:white;">Nov 2025</td><td style="background:white;">Germany</td><td style="background:white;">500</td><td style="background:white;">-</td><td style="background:white;">-</td></tr><tr><td style="background:#F5F5FA;">Harmony Energy Income Trust - BESS Portfolio Acquisition</td><td style="background:#F5F5FA;">Foresight Group LLP</td><td style="background:#F5F5FA;">Blackmead Infrastructure Limited, Foresight Energy Infrastructure Partners II S.C.Sp (FEIP II)</td><td style="background:#F5F5FA;">Jul 2025</td><td style="background:#F5F5FA;">United Kingdom</td><td style="background:#F5F5FA;">400</td><td style="background:#F5F5FA;">2h</td><td style="background:#F5F5FA;">-</td></tr><tr><td style="background:white;">Zenobē Eccles 400MW Battery Storage Financing</td><td style="background:white;">Zenobē</td><td style="background:white;">Infracapital, KKR</td><td style="background:white;">Mar 2025</td><td style="background:white;">United Kingdom</td><td style="background:white;">400</td><td style="background:white;">2h</td><td style="background:white;">-</td></tr><tr><td style="background:#F5F5FA;">Staythorpe BESS</td><td style="background:#F5F5FA;">Elements Green</td><td style="background:#F5F5FA;"></td><td style="background:#F5F5FA;">Aug 2025</td><td style="background:#F5F5FA;">United Kingdom</td><td style="background:#F5F5FA;">360</td><td style="background:#F5F5FA;">2h</td><td style="background:#F5F5FA;">-</td></tr><tr><td style="background:white;">Giga Albatross BESS Acquisition</td><td style="background:white;">Giga Storage</td><td style="background:white;">InfraVia Capital Partners</td><td style="background:white;">Jul 2025</td><td style="background:white;">Germany</td><td style="background:white;">350</td><td style="background:white;">4h</td><td style="background:white;">-</td></tr></tbody></table>
-<div class="footer"><div>Source: Modo Energy<br><span class="notes">Notes: Only publicly disclosed transactions are counted.</span></div><div class="logo">MODOENERGY</div></div>
+<div class="title">68 deals totalling 20 GW closed in 2025 across 13 European countries</div>
+<div class="subtitle">2025 European BESS transactions</div>
+<div class="search-box"><input id="search" type="text" placeholder="Search..." oninput="filterTable()"></div>
+<table id="t1"><thead><tr>
+<th>Project Name</th>
+<th>Transaction Type</th>
+<th>Power (MW)</th>
+<th>Duration (hrs)</th>
+<th>Country</th>
+<th>Lead Sponsor</th>
+<th>Buyer/Counterparty</th>
+<th>Lender</th>
+<th>Deal Value (EUR m)</th>
+<th>Date</th>
+</tr></thead><tbody>
+<tr>
+<td style="background:white">Kvosted Solar Park BESS Optimisation Deal</td>
+<td style="background:white">Offtake Agreement</td>
+<td style="background:white"></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Denmark</td>
+<td style="background:white">European Energy</td>
+<td style="background:white">Danske Commodities</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Ogrezeni Solar+BESS Project Finance</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:10.68%"></div><span class="mw-label">534</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Romania</td>
+<td style="background:#F8F8FC">Enery</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">UniCredit</td>
+<td style="background:#F8F8FC" class="value-cell">€542m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:white">Alpiq ToRa Saxony BESS</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">36</span></div></td>
+<td style="background:white;text-align:center">4</td>
+<td style="background:white">Germany</td>
+<td style="background:white">ToRa GmbH</td>
+<td style="background:white">Alpiq</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Kallima Tihange BESS Financing</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Belgium</td>
+<td style="background:#F8F8FC">Kallima</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:white">Verdian 280 MW BESS Portfolio Acquisition Italy</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:5.6000000000000005%"></div><span class="mw-label">280</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Italy</td>
+<td style="background:white">Verdian</td>
+<td style="background:white">Verdian</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Project Jupiter - WBS Power sale to Prime Capital</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:10.0%"></div><span class="mw-label">500</span></div></td>
+<td style="background:#F8F8FC;text-align:center">4</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">WBS Power GmbH</td>
+<td style="background:#F8F8FC">Prime Capital AG</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell">€500m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:white">OX2 Finland BESS Portfolio Financing</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:4.7%"></div><span class="mw-label">235</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Finland</td>
+<td style="background:white">OX2</td>
+<td style="background:white">Statkraft</td>
+<td style="background:white;font-size:10px">KfW IPEX-BANK; NatWest; Nordea Bank Abp +1</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Trivanta Poland PV and BESS Revolving Bridge Facility</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">8</span></div></td>
+<td style="background:#F8F8FC;text-align:center">5.5</td>
+<td style="background:#F8F8FC">Poland</td>
+<td style="background:#F8F8FC">Trivanta</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">Debt fund</td>
+<td style="background:#F8F8FC" class="value-cell">€17m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:white">Giga Storage Project Leopard Tolling Agreement</td>
+<td style="background:white">Offtake Agreement</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:6.0%"></div><span class="mw-label">300</span></div></td>
+<td style="background:white;text-align:center">4</td>
+<td style="background:white">Netherlands</td>
+<td style="background:white">Giga Storage</td>
+<td style="background:white">Vattenfall</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Dec 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">EP Group North Baddesley BESS with GridBeyond</td>
+<td style="background:#F8F8FC">Offtake Agreement</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">EP Group</td>
+<td style="background:#F8F8FC">GridBeyond</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Ganfeng Lithium Kintore BESS RTM Deal</td>
+<td style="background:white">Offtake Agreement</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:white;text-align:center">3.2</td>
+<td style="background:white">United Kingdom</td>
+<td style="background:white">Ganfeng Lithium</td>
+<td style="background:white">EDF</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">ECO POWER TWO Schuby BESS Tolling Agreement</td>
+<td style="background:#F8F8FC">Offtake Agreement</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:2.07%"></div><span class="mw-label">104</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2.3</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">ECO STOR GmbH</td>
+<td style="background:#F8F8FC">Alpiq</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Ric Energy Apulia 200MW BESS Acquisition</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:4.0%"></div><span class="mw-label">200</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Italy</td>
+<td style="background:white">Ric Energy Group</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Beauly BESS Acquisition by Asper and Craydel</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:#F8F8FC;text-align:center">4</td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Lovat Estates</td>
+<td style="background:#F8F8FC">Asper Investment Management</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Premier Energy Group Romania 200MW/400MWh BESS Acquisition</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:4.0%"></div><span class="mw-label">200</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">Romania</td>
+<td style="background:white">Premier Energy Group</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Northland Power Acquisition of Mieczyslawow and Kamionka BESS Projects</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:6.0%"></div><span class="mw-label">300</span></div></td>
+<td style="background:#F8F8FC;text-align:center">4</td>
+<td style="background:#F8F8FC">Poland</td>
+<td style="background:#F8F8FC">Greenvolt Group</td>
+<td style="background:#F8F8FC">Northland Power</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Return Brietlingen BESS</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">13</span></div></td>
+<td style="background:white;text-align:center">2.2</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Return</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">DAL Deutsche Anlagen-Leasing; Deutsche Anlagen-Leasing; Deutsche Leasing Finance</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Aukera Energy Gura Ialomitei BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:5.0%"></div><span class="mw-label">250</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Romania</td>
+<td style="background:#F8F8FC">Aukera Energy</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">Kommunalkredit Austria AG</td>
+<td style="background:#F8F8FC" class="value-cell">€60m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Nala Renewables 50MW BESS Finland</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">Finland</td>
+<td style="background:white">Nala Renewables</td>
+<td style="background:white">Trafigura</td>
+<td style="background:white;font-size:10px">Société Générale S.A.</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Neoen Pan-European Warehouse Financing</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">France</td>
+<td style="background:#F8F8FC">Neoen</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">BNP Paribas; BNP Paribas Fortis SA/NV; HSBC Continental Europe +1</td>
+<td style="background:#F8F8FC" class="value-cell">€200m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">ju:niz Energy 100 MWh BESS Portfolio</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Germany</td>
+<td style="background:white">ju:niz Energy GmbH</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">Hamburg Commercial Bank AG</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Statera Energy Carrington BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:13.600000000000001%"></div><span class="mw-label">680</span></div></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Statera Energy</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">Lloyds; Mizuho; NatWest +3</td>
+<td style="background:#F8F8FC" class="value-cell">€273m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Green Flexibility and Hansa Battery 500 MW BESS Portfolio Acquisition</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:10.0%"></div><span class="mw-label">500</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Germany</td>
+<td style="background:white">Hansa Battery</td>
+<td style="background:white">Green Flexibility</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">SMAREG 12 Tolling Agreement</td>
+<td style="background:#F8F8FC">Offtake Agreement</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">20</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">ju:niz Energy</td>
+<td style="background:#F8F8FC">Next Kraftwerke (Shell)</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Nov 2025</td>
+</tr>
+<tr>
+<td style="background:white">Drax acquisition of Apatura 260MW BESS portfolio</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:5.2%"></div><span class="mw-label">260</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">United Kingdom</td>
+<td style="background:white">Apatura Limited</td>
+<td style="background:white">Drax Group plc</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell">€183m</td>
+<td style="background:white;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Gruppo Futura Agrivoltaic Project with BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">45</span></div></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">Italy</td>
+<td style="background:#F8F8FC">Gruppo Futura</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">BPER; Banca Ifigest; Banca Monte dei Paschi di Siena +2</td>
+<td style="background:#F8F8FC" class="value-cell">€46m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:white">Coalburn 2 BESS - 50% Stake Sale to AIP</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:10.0%"></div><span class="mw-label">500</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">United Kingdom</td>
+<td style="background:white">Alcemi</td>
+<td style="background:white">AIP Management</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Return acquisition of four BESSMART battery storage sites in Eastern Germany</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:6.2%"></div><span class="mw-label">310</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2.2</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">BESSMART Energies GmbH</td>
+<td style="background:#F8F8FC">Return</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:white">SIMO BESS Project</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:2.0%"></div><span class="mw-label">100</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">Finland</td>
+<td style="background:white">AmpTank Energy</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">Kommunalkredit Austria AG</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Varco Energy Old Allen Road BESS Acquisition</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:2.0%"></div><span class="mw-label">100</span></div></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Varco Energy</td>
+<td style="background:#F8F8FC">Varco Energy</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:white">SUNCATCHER co-located PV and BESS bridge facility</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">16</span></div></td>
+<td style="background:white;text-align:center">1.8</td>
+<td style="background:white">Germany</td>
+<td style="background:white">SUNCATCHER</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell">€12m</td>
+<td style="background:white;white-space:nowrap">Oct 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">ADS-TEC Energy 1 GW / 2 GWh BESS Southern Germany</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:20.0%"></div><span class="mw-label">1,000</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">ADS-TEC Energy PLC</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Sep 2025</td>
+</tr>
+<tr>
+<td style="background:white">Terra One €150m Mezzanine Financing for 3GWh Germany BESS Pipeline</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:10.0%"></div><span class="mw-label">500</span></div></td>
+<td style="background:white;text-align:center">6</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Terra One</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">Aviva Investors</td>
+<td style="background:white" class="value-cell">€750m</td>
+<td style="background:white;white-space:nowrap">Sep 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Kallista Energy Saleux BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:2.4%"></div><span class="mw-label">120</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">France</td>
+<td style="background:#F8F8FC">Kallista Energy</td>
+<td style="background:#F8F8FC">ENGIE</td>
+<td style="background:#F8F8FC;font-size:10px">BNP Paribas; Landesbank Saar</td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Sep 2025</td>
+</tr>
+<tr>
+<td style="background:white">Q ENERGY Taurus B Spanish Hybrid Solar Portfolio</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:2.0%"></div><span class="mw-label">100</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Spain</td>
+<td style="background:white">Q ENERGY</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">BNP Paribas; Mitsubishi UFJ Financial Group</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Sep 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Fidra Energy Thorpe Marsh BESS Project Finance</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:28.999999999999996%"></div><span class="mw-label">1,450</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Fidra Energy</td>
+<td style="background:#F8F8FC">Octopus Energy</td>
+<td style="background:#F8F8FC;font-size:10px">ABN AMRO; ABN Amro; CIBC +22</td>
+<td style="background:#F8F8FC" class="value-cell">€1,210m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Sep 2025</td>
+</tr>
+<tr>
+<td style="background:white">Harmony Energy Topco Private Capital Fundraise</td>
+<td style="background:white">Equity Investment</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:20.0%"></div><span class="mw-label">1,000</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">United Kingdom</td>
+<td style="background:white">Harmony Energy</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell">€349m</td>
+<td style="background:white;white-space:nowrap">Aug 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Hoxter Battery Park Acquisition</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:2.6%"></div><span class="mw-label">130</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2.7</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">SMA Altenso GmbH</td>
+<td style="background:#F8F8FC">MEAG</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Aug 2025</td>
+</tr>
+<tr>
+<td style="background:white">Green Genius Izabelinė and Lieponys Solar+BESS Projects</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">18</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Lithuania</td>
+<td style="background:white">Green Genius</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">NordLB; Nordic Investment Bank</td>
+<td style="background:white" class="value-cell">€64m</td>
+<td style="background:white;white-space:nowrap">Aug 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Staythorpe BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:7.199999999999999%"></div><span class="mw-label">360</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Elements Green</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">Goldman Sachs Alternatives; Private Credit at Goldman Sachs Alternatives</td>
+<td style="background:#F8F8FC" class="value-cell">€163m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Aug 2025</td>
+</tr>
+<tr>
+<td style="background:white">BESS Waltershausen</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">10</span></div></td>
+<td style="background:white;text-align:center">2.2</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Tauber Energy GmbH</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">Deutsche Kreditbank AG</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Aug 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Shetland Standby Project - Lerwick BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1.3599999999999999%"></div><span class="mw-label">68</span></div></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Zenobē</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">Syndicate of energy transition lenders</td>
+<td style="background:#F8F8FC" class="value-cell">€70m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Jul 2025</td>
+</tr>
+<tr>
+<td style="background:white">DB Energie-EVB Beckum BESS Flexibility Agreement</td>
+<td style="background:white">Offtake Agreement</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">20</span></div></td>
+<td style="background:white;text-align:center">2.8</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Energieversorgung Beckum</td>
+<td style="background:white">DB Energie</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Jul 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Förderstedt 300 MW Battery Storage Project</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:6.0%"></div><span class="mw-label">300</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2.4</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">Eco Stor</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Jul 2025</td>
+</tr>
+<tr>
+<td style="background:white">Harmony Energy Income Trust - BESS Portfolio Acquisition</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:8.0%"></div><span class="mw-label">400</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">United Kingdom</td>
+<td style="background:white">Foresight Group LLP</td>
+<td style="background:white">Blackmead Infrastructure Limited</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Jul 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Luxcara Waltrop BESS Acquisition</td>
+<td style="background:#F8F8FC">Acquisition</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:10.4%"></div><span class="mw-label">520</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">BKW</td>
+<td style="background:#F8F8FC">Luxcara</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Jul 2025</td>
+</tr>
+<tr>
+<td style="background:white">Giga Albatross BESS Acquisition</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:7.000000000000001%"></div><span class="mw-label">350</span></div></td>
+<td style="background:white;text-align:center">4</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Giga Storage</td>
+<td style="background:white">InfraVia Capital Partners</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Jul 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">EWR AG Worms 30 MW Battery Storage Project</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">30</span></div></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">EWR AG Worms</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">IKB</td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Jun 2025</td>
+</tr>
+<tr>
+<td style="background:white">Econergy Brandenburg BESS Acquisition</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:2.0%"></div><span class="mw-label">100</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Econergy Renewable Energy</td>
+<td style="background:white">Econergy Renewable Energy</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell">€73m</td>
+<td style="background:white;white-space:nowrap">Jun 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">GIGA Leopard Battery Storage Project</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:6.0%"></div><span class="mw-label">300</span></div></td>
+<td style="background:#F8F8FC;text-align:center">4</td>
+<td style="background:#F8F8FC">Netherlands</td>
+<td style="background:#F8F8FC">GIGA Storage</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">8 European lenders; Club of 8 European lenders; Santander CIB</td>
+<td style="background:#F8F8FC" class="value-cell">€300m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Jun 2025</td>
+</tr>
+<tr>
+<td style="background:white">Energix Polska Nowe Czarnowo I &amp; II BESS Project Finance</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">24</span></div></td>
+<td style="background:white;text-align:center">2.3</td>
+<td style="background:white">Poland</td>
+<td style="background:white">Axpo Polska</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">Santander Bank Polska</td>
+<td style="background:white" class="value-cell">€25m</td>
+<td style="background:white;white-space:nowrap">Jun 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">RWE-Terralayr Virtual Battery Tolling Agreement</td>
+<td style="background:#F8F8FC">Offtake Agreement</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">Terralayr</td>
+<td style="background:#F8F8FC">RWE</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">May 2025</td>
+</tr>
+<tr>
+<td style="background:white">Field UK BESS Portfolio - Whitebirk, Holmston, Drum Farm</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:2.5%"></div><span class="mw-label">125</span></div></td>
+<td style="background:white;text-align:center">2</td>
+<td style="background:white">United Kingdom</td>
+<td style="background:white">Field</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">ING; Rabobank</td>
+<td style="background:white" class="value-cell">€49m</td>
+<td style="background:white;white-space:nowrap">May 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Project Sophocles Solar and Battery Green Loan</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:7.000000000000001%"></div><span class="mw-label">350</span></div></td>
+<td style="background:#F8F8FC;text-align:center">4</td>
+<td style="background:#F8F8FC">Italy</td>
+<td style="background:#F8F8FC">Sunprime Holdings SRL</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">European Investment Bank</td>
+<td style="background:#F8F8FC" class="value-cell">€487m</td>
+<td style="background:#F8F8FC;white-space:nowrap">May 2025</td>
+</tr>
+<tr>
+<td style="background:white">ENGIE-Terralayr Mini Toll Framework Agreement</td>
+<td style="background:white">Offtake Agreement</td>
+<td style="background:white"></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Germany</td>
+<td style="background:white">Terralayr</td>
+<td style="background:white">ENGIE</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">May 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Vattenfall-Terralayr Multi-Site Virtual BESS Tolling Agreement</td>
+<td style="background:#F8F8FC">Offtake Agreement</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1.0999999999999999%"></div><span class="mw-label">55</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">Terralayr</td>
+<td style="background:#F8F8FC">Vattenfall</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">May 2025</td>
+</tr>
+<tr>
+<td style="background:white">Obton German BESS Portfolio Subordinated Debt Financing</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:2.75%"></div><span class="mw-label">138</span></div></td>
+<td style="background:white;text-align:center">2.1</td>
+<td style="background:white">Germany</td>
+<td style="background:white">Kyon Energy</td>
+<td style="background:white"></td>
+<td style="background:white;font-size:10px">Berenberg Green Energy Debt Funds</td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Apr 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Zenobē Eccles 400MW Battery Storage Financing</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:8.0%"></div><span class="mw-label">400</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">Zenobē</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">KKR Capital Markets Partners LLP; National Westminster Bank Plc</td>
+<td style="background:#F8F8FC" class="value-cell">€256m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Mar 2025</td>
+</tr>
+<tr>
+<td style="background:white">Stendal Battery Storage Project</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:4.18%"></div><span class="mw-label">209</span></div></td>
+<td style="background:white;text-align:center">1</td>
+<td style="background:white">Germany</td>
+<td style="background:white">NOFAR Energy</td>
+<td style="background:white">Undisclosed</td>
+<td style="background:white;font-size:10px">NordLB</td>
+<td style="background:white" class="value-cell">€86m</td>
+<td style="background:white;white-space:nowrap">Mar 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Bramley BESS</td>
+<td style="background:#F8F8FC">Offtake Agreement</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:2.0%"></div><span class="mw-label">100</span></div></td>
+<td style="background:#F8F8FC;text-align:center">3.3</td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">BW ESS</td>
+<td style="background:#F8F8FC">Shell</td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Feb 2025</td>
+</tr>
+<tr>
+<td style="background:white">Lion Storage Mufasa Project</td>
+<td style="background:white">Project Finance</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:7.000000000000001%"></div><span class="mw-label">350</span></div></td>
+<td style="background:white;text-align:center">4</td>
+<td style="background:white">Netherlands</td>
+<td style="background:white">Lion Storage</td>
+<td style="background:white">Eneco</td>
+<td style="background:white;font-size:10px">ABN AMRO; ASR; Group of European lenders +4</td>
+<td style="background:white" class="value-cell">€350m</td>
+<td style="background:white;white-space:nowrap">Feb 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Elsewedy Electric 50MW/100MWh Greece BESS</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">50</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">Greece</td>
+<td style="background:#F8F8FC">Elsewedy Electric</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">European Union Recovery and Resilience Fund; National Bank of Greece S.A.</td>
+<td style="background:#F8F8FC" class="value-cell">€26m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Jan 2025</td>
+</tr>
+<tr>
+<td style="background:white">Partners Group investment in green flexibility BESS platform</td>
+<td style="background:white">Equity Investment</td>
+<td style="background:white"></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Germany</td>
+<td style="background:white">Christoph Ostermann</td>
+<td style="background:white">Partners Group</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell">€400m</td>
+<td style="background:white;white-space:nowrap">Jan 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Green Flexibility German BESS Pipeline Financing</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;text-align:center"></td>
+<td style="background:#F8F8FC">Germany</td>
+<td style="background:#F8F8FC">Green Flexibility</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell">€600m</td>
+<td style="background:#F8F8FC;white-space:nowrap">Jan 2025</td>
+</tr>
+<tr>
+<td style="background:white">ib vogt Greece Solar+Storage Portfolio Sale to Faria Renewables</td>
+<td style="background:white">Acquisition</td>
+<td style="background:white"></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Greece</td>
+<td style="background:white">ib vogt</td>
+<td style="background:white">Faria Group</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell"></td>
+<td style="background:white;white-space:nowrap">Jan 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">Eneco Dronten BESS Project Finance</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:1%"></div><span class="mw-label">32</span></div></td>
+<td style="background:#F8F8FC;text-align:center">4</td>
+<td style="background:#F8F8FC">Netherlands</td>
+<td style="background:#F8F8FC">FlevoBESS</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px">ASN Bank</td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Jan 2025</td>
+</tr>
+<tr>
+<td style="background:white">Return Energy APG equity investment</td>
+<td style="background:white">Equity Investment</td>
+<td style="background:white"><div class="mw-bar-container"><div class="mw-bar" style="width:100.0%"></div><span class="mw-label">5,000</span></div></td>
+<td style="background:white;text-align:center"></td>
+<td style="background:white">Netherlands</td>
+<td style="background:white">Return Energy</td>
+<td style="background:white">APG</td>
+<td style="background:white;font-size:10px"></td>
+<td style="background:white" class="value-cell">€300m</td>
+<td style="background:white;white-space:nowrap">Jan 2025</td>
+</tr>
+<tr>
+<td style="background:#F8F8FC">RWE Pembroke Battery Storage FID</td>
+<td style="background:#F8F8FC">Project Finance</td>
+<td style="background:#F8F8FC"><div class="mw-bar-container"><div class="mw-bar" style="width:7.000000000000001%"></div><span class="mw-label">350</span></div></td>
+<td style="background:#F8F8FC;text-align:center">2</td>
+<td style="background:#F8F8FC">United Kingdom</td>
+<td style="background:#F8F8FC">RWE</td>
+<td style="background:#F8F8FC"></td>
+<td style="background:#F8F8FC;font-size:10px"></td>
+<td style="background:#F8F8FC" class="value-cell"></td>
+<td style="background:#F8F8FC;white-space:nowrap">Jan 2025</td>
+</tr>
+</tbody></table>
+<div class="footer"><div>Source: Modo Energy<br><span class="notes">Notes: Only publicly disclosed transactions are counted. Deal value shows total disclosed value or debt raised.</span></div><div class="logo">MODOENERGY</div></div>
 </body></html>

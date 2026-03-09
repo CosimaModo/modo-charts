@@ -207,9 +207,19 @@
                 })
                 .attr("d", path);
             
+            // Compute radius from MW string using sqrt scale
+            const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
+            const maxMW = Math.max(...deals.map(d => parseMW(d.mw)));
+            const radiusScale = d3.scaleSqrt().domain([0, maxMW]).range([4, 28]);
+            deals.forEach(d => {
+                const mwVal = parseMW(d.mw);
+                d.radius = mwVal > 0 ? radiusScale(mwVal) : 5;
+                d.capacity = d.mw || "Undisclosed";
+            });
+
             // Draw deal bubbles (sorted so smaller ones are on top)
             const sortedDeals = [...deals].sort((a, b) => b.radius - a.radius);
-            
+
             mapGroup.selectAll(".deal-bubble")
                 .data(sortedDeals)
                 .enter().append("circle")
@@ -222,7 +232,7 @@
                 .on("mouseover", function(event, d) {
                     d3.select(this).attr("opacity", 1).attr("stroke-width", "1.5px");
                     tooltip.style("opacity", 1)
-                        .html(`<b>${d.name}</b><br>Developer: ${d.sponsor}<br>Country: ${d.country}<br>Capacity: ${d.capacity}<br>Type: ${d.typeLabel}<br>Date: ${d.date}`);
+                        .html(`<b>${d.name}</b><br>Country: ${d.country}<br>Capacity: ${d.capacity}<br>Type: ${d.type}<br>Date: ${d.date}`);
                 })
                 .on("mousemove", function(event) {
                     const containerRect = document.querySelector('.container').getBoundingClientRect();
