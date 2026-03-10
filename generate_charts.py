@@ -218,6 +218,9 @@ def derive_revenue_by_country(deals):
         for rt in REV_TYPES:
             row[rt] = counts[country].get(rt, 0)
         rows.append(row)
+    # Sort by total deal count descending (Plotly renders bottom-to-top,
+    # so reverse so the highest-count country appears at the top of the chart)
+    rows.sort(key=lambda r: sum(r[rt] for rt in REV_TYPES))
     return rows
 
 
