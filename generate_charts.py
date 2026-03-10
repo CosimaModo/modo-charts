@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-generate_charts.py — Regenerate all Plotly HTML charts from canonical CSVs.
+generate_charts.py — Regenerate all 9 HTML charts from canonical CSVs.
 
 Reads data from:
   data/quarterly_deal_counts.csv
   data/revenue_by_country.csv
   data/rolling_averages.csv
+  data/deals.csv
+  data/lender_deals.csv
 
-Generates:
+Generates (Plotly):
   deal-types-2025.html
   deals-by-quarter-2025.html
   europe-deals-doubled-2025.html
@@ -15,15 +17,22 @@ Generates:
   revenue-by-country-2025.html
   rolling-averages-2025.html
 
+Generates (HTML table / D3):
+  top-15-projects-2025.html
+  top-lenders-2025.html
+  europe-bess-map-2025.html
+
 Usage:
   python3 generate_charts.py          # Regenerate all charts
   python3 generate_charts.py --check  # Dry-run: print totals, don't write files
 """
 
+import colorsys
 import csv
 import os
 import sys
 import json
+from html import escape as _esc
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
@@ -64,6 +73,41 @@ DEAL_TYPE_LABELS = {
     "equity_investment": "Equity investment",
     "offtake_agreement": "Offtake agreement",
 }
+
+MAP_TYPES = {
+    "Project Finance": ("Project finance", "#4472C4"),
+    "Acquisition": ("M&A", "#2F9FC4"),
+    "Equity Investment": ("Equity", "#A0A0B8"),
+    "Offtake Agreement": ("Offtake", "#F5D5B0"),
+}
+
+
+def _parse_num(s):
+    """Parse a possibly comma-formatted number. Returns 0 for empty/dash."""
+    s = s.strip().replace(",", "")
+    if not s or s == "-":
+        return 0
+    try:
+        return int(float(s))
+    except ValueError:
+        return 0
+
+
+def _fmt_comma(n):
+    """Format integer with comma separators."""
+    return f"{n:,}" if n else ""
+
+
+def _deal_hash_color(name):
+    """Generate a deterministic muted color from a deal name."""
+    h = 0
+    for c in name:
+        h = (h * 31 + ord(c)) & 0xFFFFFFFF
+    hue = (h % 360) / 360.0
+    sat = 0.40 + ((h >> 8) % 100) / 400.0
+    val = 0.45 + ((h >> 16) % 100) / 400.0
+    r, g, b = colorsys.hsv_to_rgb(hue, sat, val)
+    return f"#{int(r*255):02X}{int(g*255):02X}{int(b*255):02X}"
 
 
 # ── Data loading ─────────────────────────────────────────────────────
@@ -110,6 +154,50 @@ def load_rolling_averages():
             row["n_deals_duration"] = int(row["n_deals_duration"])
             rows.append(row)
     return rows
+
+
+def load_deals():
+    """Returns list of deal dicts from data/deals.csv (2025 deal-level data)."""
+    rows = []
+    with open(DATA_DIR / "deals.csv", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            row["mw_num"] = _parse_num(row["mw"])
+            rows.append(row)
+    return rows
+
+
+def load_lender_deals():
+    """Returns list of lender dicts, each with a deals list for bar segments."""
+    lenders = []
+    current = None
+    with open(DATA_DIR / "lender_deals.csv", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            name = row["lender"]
+            if current is None or current["lender"] != name:
+                if current:
+                    lenders.append(current)
+                current = {
+                    "lender": name,
+                    "deal_count": int(row["deal_count"]),
+                    "total_mw": _parse_num(row["total_mw"]),
+                    "energy_mwh": row["energy_mwh"].strip(),
+                    "countries": row["countries"].strip(),
+                    "deals": [],
+                }
+            deal_mw = _parse_num(row.get("deal_mw", ""))
+            deal_name = row.get("deal_name", "").strip()
+            deal_sponsor = row.get("deal_sponsor", "").strip()
+            if deal_mw > 0 and deal_name:
+                current["deals"].append({
+                    "name": deal_name,
+                    "sponsor": deal_sponsor,
+                    "mw": deal_mw,
+                })
+        if current:
+            lenders.append(current)
+    return lenders
 
 
 # ── HTML wrapper (new Modo CSS template) ─────────────────────────────
@@ -620,6 +708,550 @@ def generate_rolling_averages_chart(avg_data, check=False):
     print(f"  Wrote {out_path.name}")
 
 
+# ── Non-Plotly chart generators ──────────────────────────────────────
+
+# Shared CSS block for table-based charts (projects + lenders)
+_TABLE_CSS_BASE = """\
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { font-family: DM Sans, Arial, sans-serif; background:white; color:#1A1A2E; }
+.chart-wrapper { width:100%; height:100%; display:flex; flex-direction:column; overflow:hidden; }
+.chart-header { padding:16px 20px 4px; flex-shrink:0; }
+.chart-title { font-size:18px; font-weight:700; color:#1A1A2E; line-height:1.3; }
+.chart-subtitle { font-size:13px; color:#8C8CAA; margin-top:4px; }
+.chart-scroll { flex:1; overflow:auto; -webkit-overflow-scrolling:touch; padding:0 20px; }
+.chart-footer { padding:8px 20px 12px; display:flex; justify-content:space-between; align-items:flex-end; flex-shrink:0; }
+.chart-source { font-size:10px; color:#8C8CAA; line-height:1.5; }
+.chart-notes { font-size:9px; color:#AAAACC; }
+.chart-logo { font-size:14px; font-weight:700; color:#1A1A2E; letter-spacing:4px; white-space:nowrap; }
+.search-box { margin-bottom:12px; }
+.search-box input { width:180px; padding:6px 10px; font-size:12px; font-family:DM Sans, Arial, sans-serif; border:1px solid #ddd; border-radius:4px; outline:none; color:#333; }
+.search-box input::placeholder { color:#999; }
+th { background:#555; color:white; text-align:left; padding:10px 8px; font-weight:600; font-size:11px; border:none; white-space:nowrap; }
+th:first-child { border-radius: 4px 0 0 0; }
+th:last-child { border-radius: 0 4px 0 0; }
+td { padding:8px 8px; border-bottom:1px solid #f0f0f0; font-size:11px; vertical-align:middle; }
+tr:hover td { background:#f0f4ff !important; }
+.value-cell { text-align:right; font-variant-numeric: tabular-nums; }"""
+
+
+def generate_top15_projects_chart(deals, check=False):
+    """HTML table: all 2025 deals with search box, MW bars, zebra striping."""
+    n_deals = len(deals)
+    total_gw = sum(d["mw_num"] for d in deals) / 1000
+    n_countries = len(set(d["country"] for d in deals if d["country"]))
+    max_mw = max((d["mw_num"] for d in deals), default=1) or 1
+
+    if check:
+        print(f"top-15-projects-2025: {n_deals} deals, {total_gw:.0f} GW, {n_countries} countries")
+        return
+
+    # Build table rows
+    row_parts = []
+    for i, d in enumerate(deals):
+        bg = "white" if i % 2 == 0 else "#F8F8FC"
+        if d["mw_num"] > 0:
+            pct = d["mw_num"] / max_mw * 100
+            mw_cell = (
+                '<div class="mw-bar-container">'
+                '<div class="mw-bar" style="width:%.2f%%"></div>'
+                '<span class="mw-label">%s</span></div>'
+            ) % (pct, _fmt_comma(d["mw_num"]))
+        else:
+            mw_cell = ""
+        dur = d["duration_hrs"].strip()
+        val = d.get("deal_value", "").strip()
+        val_display = val.replace("\u20ac", "").strip() if val else ""
+        row_parts.append(
+            "<tr>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s;text-align:center\">%s</td>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s;font-size:10px\">%s</td>"
+            "<td style=\"background:%s\" class=\"value-cell\">%s</td>"
+            "<td style=\"background:%s;white-space:nowrap\">%s</td>"
+            "</tr>" % (
+                bg, _esc(d["name"]),
+                bg, _esc(d["transaction_type"]),
+                bg, mw_cell,
+                bg, dur,
+                bg, _esc(d["country"]),
+                bg, _esc(d.get("lead_sponsor", "")),
+                bg, _esc(d.get("buyer_counterparty", "")),
+                bg, _esc(d.get("lender", "")),
+                bg, val_display,
+                bg, d["date_display"],
+            )
+        )
+
+    title = "%d deals totalling %d GW closed in 2025 across %d European countries" % (
+        n_deals, int(total_gw), n_countries)
+
+    out = [
+        "<!DOCTYPE html><html><head>",
+        '<meta charset="utf-8">',
+        GOOGLE_FONTS,
+        "<style>",
+        _TABLE_CSS_BASE,
+        "table { border-collapse:collapse; width:100%; font-size:11px; min-width:700px; }",
+        ".mw-bar-container { display:flex; align-items:center; gap:6px; min-width:120px; }",
+        ".mw-bar { height:14px; background:#4472C4; border-radius:2px; min-width:1px; }",
+        ".mw-label { font-size:10px; font-weight:600; white-space:nowrap; color:#333; }",
+        "</style>",
+        "<script>",
+        "function filterTable(){",
+        '  var q = document.getElementById("search").value.toLowerCase();',
+        '  var rows = document.querySelectorAll("#t1 tbody tr");',
+        "  rows.forEach(function(row){",
+        "    var text = row.textContent.toLowerCase();",
+        '    row.style.display = text.indexOf(q) !== -1 ? "" : "none";',
+        "  });",
+        "}",
+        "</script></head><body>",
+        '<div class="chart-wrapper">',
+        '<div class="chart-header">',
+        '<div class="chart-title">%s</div>' % _esc(title),
+        '<div class="chart-subtitle">2025 European BESS transactions</div>',
+        "</div>",
+        '<div class="chart-scroll">',
+        '<div class="search-box"><input id="search" type="text" '
+        'placeholder="Search..." oninput="filterTable()"></div>',
+        '<table id="t1"><thead><tr>',
+        "<th>Project Name</th>",
+        "<th>Transaction Type</th>",
+        "<th>Power (MW)</th>",
+        "<th>Duration (hrs)</th>",
+        "<th>Country</th>",
+        "<th>Lead Sponsor</th>",
+        "<th>Buyer/Counterparty</th>",
+        "<th>Lender</th>",
+        "<th>Deal Value (EUR m)</th>",
+        "<th>Date</th>",
+        "</tr></thead><tbody>",
+    ]
+    out.extend(row_parts)
+    out.extend([
+        "</tbody></table>",
+        "</div>",
+        '<div class="chart-footer">',
+        "<div>",
+        '<div class="chart-source">Source: Modo Energy</div>',
+        '<div class="chart-notes">Notes: Only publicly disclosed transactions are counted.</div>',
+        "</div>",
+        '<div class="chart-logo">MODOENERGY</div>',
+        "</div></div></body></html>",
+    ])
+    page_html = "\n".join(out)
+    out_path = SCRIPT_DIR / "top-15-projects-2025.html"
+    out_path.write_text(page_html, encoding="utf-8")
+    print(f"  Wrote {out_path.name}")
+
+
+def generate_top_lenders_chart(lender_data, check=False):
+    """HTML table: lenders ranked by deal count, with colored stacked bar segments."""
+    n_lenders = len(lender_data)
+    max_total_mw = max((l["total_mw"] for l in lender_data), default=1) or 1
+
+    if check:
+        print(f"top-lenders-2025: {n_lenders} lenders, max MW = {max_total_mw}")
+        return
+
+    row_parts = []
+    for i, lender in enumerate(lender_data):
+        bg = "white" if i % 2 == 0 else "#F8F8FC"
+        if lender["total_mw"] > 0 and lender["deals"]:
+            bar_pct = lender["total_mw"] / max_total_mw * 100
+            segments = []
+            for deal in lender["deals"]:
+                seg_pct = deal["mw"] / lender["total_mw"] * 100
+                color = _deal_hash_color(deal["name"])
+                segments.append(
+                    '<div class="bar-seg" '
+                    'data-sponsor="%s" '
+                    'data-deal="%s" '
+                    'data-mw="%s" '
+                    'style="width:%.1f%%;height:14px;background:%s"></div>'
+                    % (
+                        _esc(deal["sponsor"]),
+                        _esc(deal["name"]),
+                        _fmt_comma(deal["mw"]),
+                        seg_pct,
+                        color,
+                    )
+                )
+            bar_html = (
+                '<div style="display:flex;align-items:center;gap:8px">'
+                '<div style="display:flex;height:14px;border-radius:2px;'
+                'overflow:hidden;width:%.1f%%;min-width:4px">%s</div>'
+                '<span style="font-size:10px;font-weight:600;white-space:nowrap;'
+                'color:#333;flex-shrink:0">%s</span></div>'
+                % (bar_pct, "".join(segments), _fmt_comma(lender["total_mw"]))
+            )
+        else:
+            bar_html = '<span style="color:#aaa;font-size:10px">-</span>'
+
+        energy = lender["energy_mwh"] if lender["energy_mwh"] != "-" else "-"
+        row_parts.append(
+            "<tr>"
+            "<td style=\"background:%s;font-weight:500\">%s</td>"
+            "<td style=\"background:%s;text-align:center\">%s</td>"
+            "<td style=\"background:%s\">%s</td>"
+            "<td style=\"background:%s\" class=\"value-cell\">%s</td>"
+            "<td style=\"background:%s;font-size:10px\">%s</td>"
+            "</tr>" % (
+                bg, _esc(lender["lender"]),
+                bg, lender["deal_count"],
+                bg, bar_html,
+                bg, energy,
+                bg, _esc(lender["countries"]),
+            )
+        )
+
+    top_lender = _esc(lender_data[0]["lender"]) if lender_data else "Unknown"
+    out = [
+        "<!DOCTYPE html><html><head>",
+        '<meta charset="utf-8">',
+        GOOGLE_FONTS,
+        "<style>",
+        _TABLE_CSS_BASE,
+        "table { border-collapse:collapse; width:100%; font-size:11px; "
+        "table-layout:fixed; min-width:700px; }",
+        "col.c-lender { width:17%; }",
+        "col.c-deals  { width:5%; }",
+        "col.c-power  { width:38%; }",
+        "col.c-energy { width:13%; }",
+        "col.c-country { width:27%; }",
+        "td { overflow:hidden; text-overflow:ellipsis; }",
+        ".bar-seg { display:inline-block; min-width:2px; cursor:pointer; "
+        "position:relative; }",
+        ".bar-seg:hover { opacity:0.85; }",
+        "#tooltip {",
+        "  display:none; position:fixed; z-index:1000;",
+        "  background:rgba(26,26,46,0.92); color:#fff; padding:7px 11px;",
+        "  border-radius:5px; font-size:11px; font-family:DM Sans, Arial, sans-serif;",
+        "  pointer-events:none; white-space:nowrap; line-height:1.4;",
+        "  box-shadow:0 2px 8px rgba(0,0,0,0.18);",
+        "}",
+        "#tooltip .tt-mw { color:#ccc; }",
+        "</style>",
+        "<script>",
+        "function filterTable(){",
+        '  var q = document.getElementById("search").value.toLowerCase();',
+        '  var rows = document.querySelectorAll("#t7 tbody tr");',
+        "  rows.forEach(function(row){",
+        "    var text = row.textContent.toLowerCase();",
+        '    row.style.display = text.indexOf(q) !== -1 ? "" : "none";',
+        "  });",
+        "}",
+        "document.addEventListener('DOMContentLoaded', function(){",
+        "  var tip = document.getElementById('tooltip');",
+        "  document.querySelectorAll('.bar-seg').forEach(function(el){",
+        "    el.addEventListener('mouseenter', function(e){",
+        "      tip.innerHTML = '<span class=\"tt-mw\">' + el.dataset.deal "
+        "+ ' \\u2014 ' + el.dataset.mw + ' MW</span>';",
+        "      tip.style.display = 'block';",
+        "    });",
+        "    el.addEventListener('mousemove', function(e){",
+        "      tip.style.left = (e.clientX + 12) + 'px';",
+        "      tip.style.top = (e.clientY - 10) + 'px';",
+        "    });",
+        "    el.addEventListener('mouseleave', function(){",
+        "      tip.style.display = 'none';",
+        "    });",
+        "  });",
+        "});",
+        "</script></head><body>",
+        '<div id="tooltip"></div>',
+        '<div class="chart-wrapper">',
+        '<div class="chart-header">',
+        '<div class="chart-title">%s was the most active European BESS '
+        'lender by deal count in 2025</div>' % top_lender,
+        '<div class="chart-subtitle">Lenders ranked by number of deals, '
+        'then by total rated power (MW). Hover bars for project details.</div>',
+        "</div>",
+        '<div class="chart-scroll">',
+        '<div class="search-box"><input id="search" type="text" '
+        'placeholder="Search..." oninput="filterTable()"></div>',
+        '<table id="t7"><colgroup><col class="c-lender"><col class="c-deals">'
+        '<col class="c-power"><col class="c-energy"><col class="c-country"></colgroup>',
+        "<thead><tr>",
+        "<th>Lender</th>",
+        '<th style="text-align:center">Deals</th>',
+        "<th>Rated Power (MW) - disclosed</th>",
+        '<th style="text-align:right">Energy (MWh)</th>',
+        "<th>Countries</th>",
+        "</tr></thead><tbody>",
+    ]
+    out.extend(row_parts)
+    out.extend([
+        "</tbody></table>",
+        "</div>",
+        '<div class="chart-footer">',
+        "<div>",
+        '<div class="chart-source">Source: Modo Energy</div>',
+        '<div class="chart-notes">Notes: Bars show project breakdown by lead sponsor. '
+        'Hover bars for details. Deals with undisclosed capacity show no bar. '
+        'Excludes tolling agreements, equity-only deals, and mezzanine financing.</div>',
+        "</div>",
+        '<div class="chart-logo">MODOENERGY</div>',
+        "</div></div></body></html>",
+    ])
+    page_html = "\n".join(out)
+    out_path = SCRIPT_DIR / "top-lenders-2025.html"
+    out_path.write_text(page_html, encoding="utf-8")
+    print(f"  Wrote {out_path.name}")
+
+
+def generate_europe_map_chart(deals, check=False):
+    """D3.js + TopoJSON map with deal bubbles sized by MW, colored by type."""
+    countries = sorted(set(d["country"] for d in deals if d["country"]))
+
+    if check:
+        print(f"europe-bess-map-2025: {len(deals)} deals, "
+              f"{len(countries)} countries: {countries}")
+        return
+
+    # Build JS deals array
+    js_entries = []
+    for d in deals:
+        ttype, color = MAP_TYPES.get(d["transaction_type"], ("Other", "#999"))
+        mw_num = d["mw_num"]
+        mw_str = "%s MW" % _fmt_comma(mw_num) if mw_num > 0 else ""
+        name_js = d["name"].replace("\\", "\\\\").replace('"', '\\"')
+        country_js = d["country"].replace('"', '\\"')
+        js_entries.append(
+            '{name:"%s",lat:%s,lon:%s,country:"%s",type:"%s",'
+            'color:"%s",mw:"%s",date:"%s"}'
+            % (name_js, d["lat"], d["lon"], country_js,
+               ttype, color, mw_str, d["date"])
+        )
+    deals_js = ",\n".join(js_entries)
+    countries_js = ", ".join('"%s"' % c for c in countries)
+
+    # D3 rendering script
+    d3_script = r"""
+        const deals = [
+%DEALS%
+];
+        const dealCountryNames = new Set([%COUNTRIES%]);
+
+        const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
+        const maxMW = Math.max(...deals.map(d => parseMW(d.mw))) || 1;
+        deals.forEach(d => {
+            const mwVal = parseMW(d.mw);
+            d.radius = mwVal > 0 ? 3 + (Math.sqrt(mwVal / maxMW) * 16) : 4;
+            d.capacity = d.mw || "Undisclosed";
+        });
+
+        const width = 800;
+        const height = 480;
+
+        const projection = d3.geoMercator()
+            .center([10, 52])
+            .scale(600)
+            .translate([width / 2 - 20, height / 2]);
+
+        const path = d3.geoPath().projection(projection);
+
+        const svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", `0 0 ${width} ${height}`);
+
+        svg.append("defs").append("clipPath")
+            .attr("id", "map-clip")
+            .append("rect")
+            .attr("width", width)
+            .attr("height", height);
+
+        const mapGroup = svg.append("g").attr("clip-path", "url(#map-clip)");
+
+        mapGroup.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("class", "ocean");
+
+        const tooltip = d3.select("#tooltip");
+
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json").then(function(world) {
+            const countries = topojson.feature(world, world.objects.countries);
+
+            const numericToName = {
+                "826": "United Kingdom", "276": "Germany", "250": "France",
+                "380": "Italy", "724": "Spain", "528": "Netherlands",
+                "616": "Poland", "246": "Finland", "642": "Romania",
+                "300": "Greece", "208": "Denmark", "440": "Lithuania",
+                "056": "Belgium", "372": "Ireland", "620": "Portugal",
+                "752": "Sweden", "040": "Austria", "756": "Switzerland",
+                "203": "Czech Republic", "703": "Slovakia", "348": "Hungary",
+                "191": "Croatia", "705": "Slovenia", "100": "Bulgaria",
+                "804": "Ukraine", "112": "Belarus", "498": "Moldova",
+                "688": "Serbia", "070": "Bosnia and Herzegovina",
+                "499": "Montenegro", "807": "North Macedonia", "008": "Albania",
+                "578": "Norway", "352": "Iceland", "233": "Estonia",
+                "428": "Latvia", "442": "Luxembourg", "470": "Malta",
+                "196": "Cyprus", "900": "Kosovo",
+            };
+
+            const europeFeatures = countries.features.filter(f => {
+                const centroid = d3.geoCentroid(f);
+                return centroid[1] > 34 && centroid[1] < 72 && centroid[0] > -25 && centroid[0] < 45;
+            });
+
+            mapGroup.selectAll(".country")
+                .data(europeFeatures)
+                .enter().append("path")
+                .attr("class", d => {
+                    const name = numericToName[d.id] || d.properties?.name || "";
+                    return "country " + (dealCountryNames.has(name) ? "country-deal" : "country-no-deal");
+                })
+                .attr("d", path);
+
+            const sortedDeals = [...deals].sort((a, b) => b.radius - a.radius);
+
+            mapGroup.selectAll(".deal-bubble")
+                .data(sortedDeals)
+                .enter().append("circle")
+                .attr("class", "deal-bubble")
+                .attr("cx", d => projection([d.lon, d.lat])[0])
+                .attr("cy", d => projection([d.lon, d.lat])[1])
+                .attr("r", d => d.radius)
+                .attr("fill", d => d.color)
+                .attr("opacity", 0.85)
+                .on("mouseover", function(event, d) {
+                    d3.select(this).attr("opacity", 1).attr("stroke-width", "1.5px");
+                    tooltip.style("opacity", 1)
+                        .html(`<b>${d.name}</b><br>Country: ${d.country}<br>Capacity: ${d.capacity}<br>Type: ${d.type}<br>Date: ${d.date}`);
+                })
+                .on("mousemove", function(event) {
+                    const containerRect = document.querySelector('.map-container').getBoundingClientRect();
+                    const x = event.clientX - containerRect.left;
+                    const y = event.clientY - containerRect.top;
+                    const tooltipEl = document.getElementById('tooltip');
+                    const tw = tooltipEl.offsetWidth;
+                    let left = x + 15;
+                    if (left + tw > 800) { left = x - tw - 15; }
+                    tooltip.style("left", left + "px").style("top", (y - 10) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("opacity", 0.85).attr("stroke-width", "0.6px");
+                    tooltip.style("opacity", 0);
+                });
+        });
+    """.replace("%DEALS%", deals_js).replace("%COUNTRIES%", countries_js)
+
+    out = [
+        "<!DOCTYPE html>",
+        "<html>",
+        "<head>",
+        '    <meta charset="utf-8">',
+        "    <title>European BESS deal map 2025</title>",
+        '    ' + GOOGLE_FONTS,
+        '    <script src="https://d3js.org/d3.v7.min.js"></script>',
+        '    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>',
+        "    <style>",
+        "        * { margin: 0; padding: 0; box-sizing: border-box; }",
+        "        body { font-family: 'DM Sans', Arial, sans-serif; background: white; }",
+        "        .chart-wrapper { width: 100%; overflow: hidden; }",
+        "        .chart-header { padding: 16px 20px 4px; }",
+        "        .chart-title { font-size: 18px; font-weight: 700; color: #1A1A2E; "
+        "line-height: 1.3; }",
+        "        .chart-subtitle { font-size: 13px; color: #8C8CAA; margin-top: 4px; }",
+        "        .chart-legend { display: flex; gap: 18px; padding: 8px 20px 4px; }",
+        "        .legend-item { display: flex; align-items: center; gap: 5px; "
+        "font-size: 11px; color: #1A1A2E; }",
+        "        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }",
+        "        .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }",
+        "        .map-container { position: relative; min-width: 800px; }",
+        "        .chart-footer {",
+        "            padding: 8px 20px 12px;",
+        "            display: flex;",
+        "            justify-content: space-between;",
+        "            align-items: flex-end;",
+        "        }",
+        "        .chart-source { font-size: 10px; color: #8C8CAA; line-height: 1.5; }",
+        "        .chart-notes { font-size: 9px; color: #AAAACC; }",
+        "        .chart-logo {",
+        "            font-size: 14px;",
+        "            font-weight: 700;",
+        "            color: #1A1A2E;",
+        "            letter-spacing: 4px;",
+        "            white-space: nowrap;",
+        "        }",
+        "        svg { display: block; }",
+        "        .country { stroke: white; stroke-width: 0.8px; }",
+        "        .country-deal { fill: #D6DFED; }",
+        "        .country-no-deal { fill: #EDEDF0; }",
+        "        .ocean { fill: white; }",
+        "        .deal-bubble { stroke: white; stroke-width: 0.6px; cursor: pointer; }",
+        "        .tooltip {",
+        "            position: absolute;",
+        "            background: #1A1A2E;",
+        "            color: white;",
+        "            padding: 10px 14px;",
+        "            border-radius: 6px;",
+        "            font-size: 13px;",
+        "            font-family: 'DM Sans', Arial, sans-serif;",
+        "            pointer-events: none;",
+        "            opacity: 0;",
+        "            transition: opacity 0.15s;",
+        "            line-height: 1.5;",
+        "            max-width: 320px;",
+        "            z-index: 10;",
+        "        }",
+        "        .tooltip b { font-weight: 700; }",
+        "    </style>",
+        "</head>",
+        "<body>",
+        '<div class="chart-wrapper">',
+        '    <div class="chart-header">',
+        '        <div class="chart-title">Germany and the UK accounted for '
+        'most BESS deals in 2025</div>',
+        '        <div class="chart-subtitle">European BESS transactions by '
+        'location and type, 2025</div>',
+        "    </div>",
+        '    <div class="chart-legend">',
+        '        <div class="legend-item"><div class="legend-dot" '
+        'style="background:#4472C4;"></div>Project finance</div>',
+        '        <div class="legend-item"><div class="legend-dot" '
+        'style="background:#2F9FC4;"></div>M&amp;A</div>',
+        '        <div class="legend-item"><div class="legend-dot" '
+        'style="background:#A0A0B8;"></div>Equity</div>',
+        '        <div class="legend-item"><div class="legend-dot" '
+        'style="background:#F5D5B0;"></div>Offtake</div>',
+        "    </div>",
+        '    <div class="chart-scroll">',
+        '        <div class="map-container">',
+        '            <div id="map"></div>',
+        '            <div class="tooltip" id="tooltip"></div>',
+        "        </div>",
+        "    </div>",
+        '    <div class="chart-footer">',
+        "        <div>",
+        '            <div class="chart-source">Source: Modo Energy</div>',
+        '            <div class="chart-notes">Circle size proportional to '
+        'capacity (MW). For portfolio deals, location reflects company HQ.</div>',
+        "        </div>",
+        '        <div class="chart-logo">MODOENERGY</div>',
+        "    </div>",
+        "</div>",
+        "    <script>",
+        d3_script,
+        "    </script>",
+        "</body>",
+        "</html>",
+    ]
+    page_html = "\n".join(out)
+    out_path = SCRIPT_DIR / "europe-bess-map-2025.html"
+    out_path.write_text(page_html, encoding="utf-8")
+    print(f"  Wrote {out_path.name}")
+
+
 # ── Main ─────────────────────────────────────────────────────────────
 
 def main():
@@ -629,6 +1261,8 @@ def main():
     quarterly = load_quarterly_deal_counts()
     country = load_revenue_by_country()
     averages = load_rolling_averages()
+    deals = load_deals()
+    lender_data = load_lender_deals()
 
     # Quick sanity checks
     europe_2024 = sum(
@@ -647,6 +1281,8 @@ def main():
     print(f"  Europe 2025: {europe_2025} deals")
     print(f"  Europe total: {europe_2024 + europe_2025} deals")
     print(f"  Revenue-by-country total: {country_total} deals (2025 only)")
+    print(f"  Deals CSV: {len(deals)} deals")
+    print(f"  Lender CSV: {len(lender_data)} lenders")
     print()
 
     if europe_2025 != country_total:
@@ -662,6 +1298,9 @@ def main():
         generate_germany_chart(quarterly, check=True)
         generate_revenue_by_country_chart(country, check=True)
         generate_rolling_averages_chart(averages, check=True)
+        generate_top15_projects_chart(deals, check=True)
+        generate_top_lenders_chart(lender_data, check=True)
+        generate_europe_map_chart(deals, check=True)
         print()
         print("No files written.")
         return
@@ -673,13 +1312,11 @@ def main():
     generate_germany_chart(quarterly)
     generate_revenue_by_country_chart(country)
     generate_rolling_averages_chart(averages)
+    generate_top15_projects_chart(deals)
+    generate_top_lenders_chart(lender_data)
+    generate_europe_map_chart(deals)
     print()
-    print("Done. All 6 Plotly charts regenerated from canonical CSVs.")
-    print()
-    print("Charts NOT regenerated (manual/non-Plotly):")
-    print("  top-15-projects-2025.html  (HTML table)")
-    print("  top-lenders-2025.html      (HTML table)")
-    print("  europe-bess-map-2025.html  (D3 map)")
+    print("Done. All 9 charts regenerated from canonical CSVs.")
 
 
 if __name__ == "__main__":

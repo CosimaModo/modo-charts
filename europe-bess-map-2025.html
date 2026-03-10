@@ -65,7 +65,7 @@
     </div>
     <div class="chart-legend">
         <div class="legend-item"><div class="legend-dot" style="background:#4472C4;"></div>Project finance</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#2F9FC4;"></div>M&A</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2F9FC4;"></div>M&amp;A</div>
         <div class="legend-item"><div class="legend-dot" style="background:#A0A0B8;"></div>Equity</div>
         <div class="legend-item"><div class="legend-dot" style="background:#F5D5B0;"></div>Offtake</div>
     </div>
@@ -84,21 +84,31 @@
     </div>
 </div>
     <script>
+
         const deals = [
+{name:"Kvosted Solar Park BESS Optimisation Deal",lat:56.4528,lon:9.4019,country:"Denmark",type:"Offtake",color:"#F5D5B0",mw:"",date:"2025-12-29"},
 {name:"Ogrezeni Solar+BESS Project Finance",lat:44.3333,lon:25.8333,country:"Romania",type:"Project finance",color:"#4472C4",mw:"534 MW",date:"2025-12-24"},
 {name:"Alpiq ToRa Saxony BESS",lat:51.0,lon:13.4,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"36 MW",date:"2025-12-22"},
-{name:"Verdian 280 MW BESS Portfolio Acquisition Italy",lat:40.85,lon:14.25,country:"Italy",type:"M&A",color:"#2F9FC4",mw:"280 MW",date:"2025-12-11"},
+{name:"Kallima Tihange BESS Financing",lat:50.5333,lon:5.2833,country:"Belgium",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-12-15"},
 {name:"Project Jupiter - WBS Power sale to Prime Capital",lat:51.9917,lon:13.0694,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"500 MW",date:"2025-12-11"},
+{name:"Verdian 280 MW BESS Portfolio Acquisition Italy",lat:40.85,lon:14.25,country:"Italy",type:"M&A",color:"#2F9FC4",mw:"280 MW",date:"2025-12-11"},
 {name:"OX2 Finland BESS Portfolio Financing",lat:63.45,lon:24.3,country:"Finland",type:"Project finance",color:"#4472C4",mw:"235 MW",date:"2025-12-01"},
 {name:"Trivanta Poland PV and BESS Revolving Bridge Facility",lat:52.2297,lon:21.0122,country:"Poland",type:"Project finance",color:"#4472C4",mw:"8 MW",date:"2025-12-01"},
-{name:"ECO POWER TWO Schuby BESS Tolling Agreement",lat:54.5167,lon:9.45,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"103.5 MW",date:"2025-11-25"},
-{name:"Beauly BESS Acquisition by Asper and Craydel",lat:57.4783,lon:-4.4717,country:"United Kingdom",type:"M&A",color:"#2F9FC4",mw:"49.9 MW",date:"2025-11-21"},
-{name:"Northland Power Acquisition of Mieczyslawow and Kamionka BESS Projects",lat:51.7833,lon:19.3833,country:"Poland",type:"M&A",color:"#2F9FC4",mw:"300 MW",date:"2025-11-20"},
+{name:"Giga Storage Project Leopard Tolling Agreement",lat:53.3333,lon:6.9167,country:"Netherlands",type:"Offtake",color:"#F5D5B0",mw:"300 MW",date:"2025-12-01"},
+{name:"EP Group North Baddesley BESS with GridBeyond",lat:50.9833,lon:-1.4333,country:"United Kingdom",type:"Offtake",color:"#F5D5B0",mw:"50 MW",date:"2025-11-26"},
+{name:"Ganfeng Lithium Kintore BESS RTM Deal",lat:57.2333,lon:-2.35,country:"United Kingdom",type:"Offtake",color:"#F5D5B0",mw:"50 MW",date:"2025-11-26"},
+{name:"ECO POWER TWO Schuby BESS Tolling Agreement",lat:54.5167,lon:9.45,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"104 MW",date:"2025-11-25"},
+{name:"Ric Energy Apulia 200MW BESS Acquisition",lat:41.0,lon:16.5,country:"Italy",type:"M&A",color:"#2F9FC4",mw:"200 MW",date:"2025-11-25"},
+{name:"Premier Energy Group Romania 200MW/400MWh BESS Acquisition",lat:47.1585,lon:27.6014,country:"Romania",type:"M&A",color:"#2F9FC4",mw:"200 MW",date:"2025-11-21"},
+{name:"Beauly BESS Acquisition by Asper and Craydel",lat:57.4783,lon:-4.4717,country:"United Kingdom",type:"M&A",color:"#2F9FC4",mw:"50 MW",date:"2025-11-21"},
 {name:"Return Brietlingen BESS",lat:53.3333,lon:10.4167,country:"Germany",type:"Project finance",color:"#4472C4",mw:"13 MW",date:"2025-11-20"},
+{name:"Northland Power Acquisition of Mieczyslawow and Kamionka BESS Projects",lat:51.7833,lon:19.3833,country:"Poland",type:"M&A",color:"#2F9FC4",mw:"300 MW",date:"2025-11-20"},
 {name:"Aukera Energy Gura Ialomitei BESS",lat:44.7167,lon:27.2667,country:"Romania",type:"Project finance",color:"#4472C4",mw:"250 MW",date:"2025-11-17"},
 {name:"Nala Renewables 50MW BESS Finland",lat:60.6333,lon:25.3167,country:"Finland",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-11-14"},
 {name:"Neoen Pan-European Warehouse Financing",lat:48.8566,lon:2.3522,country:"France",type:"Project finance",color:"#4472C4",mw:"",date:"2025-11-13"},
+{name:"ju:niz Energy 100 MWh BESS Portfolio",lat:48.1717,lon:11.7167,country:"Germany",type:"Project finance",color:"#4472C4",mw:"",date:"2025-11-12"},
 {name:"Statera Energy Carrington BESS",lat:53.4333,lon:-2.3667,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"680 MW",date:"2025-11-06"},
+{name:"Green Flexibility and Hansa Battery 500 MW BESS Portfolio Acquisition",lat:47.65,lon:10.4,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"500 MW",date:"2025-11-05"},
 {name:"SMAREG 12 Tolling Agreement",lat:51.6239,lon:12.3289,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"20 MW",date:"2025-11-01"},
 {name:"Drax acquisition of Apatura 260MW BESS portfolio",lat:53.7833,lon:-1.0667,country:"United Kingdom",type:"M&A",color:"#2F9FC4",mw:"260 MW",date:"2025-10-30"},
 {name:"Gruppo Futura Agrivoltaic Project with BESS",lat:40.0,lon:9.1,country:"Italy",type:"Project finance",color:"#4472C4",mw:"45 MW",date:"2025-10-21"},
@@ -111,16 +121,17 @@
 {name:"Terra One €150m Mezzanine Financing for 3GWh Germany BESS Pipeline",lat:52.52,lon:13.405,country:"Germany",type:"Project finance",color:"#4472C4",mw:"500 MW",date:"2025-09-18"},
 {name:"Kallista Energy Saleux BESS",lat:49.85,lon:2.25,country:"France",type:"Project finance",color:"#4472C4",mw:"120 MW",date:"2025-09-04"},
 {name:"Fidra Energy Thorpe Marsh BESS Project Finance",lat:53.5833,lon:-1.0667,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"1,450 MW",date:"2025-09-01"},
-{name:"Harmony Energy Topco Private Capital Fundraise",lat:51.128,lon:-3.0038,country:"United Kingdom",type:"Equity",color:"#A0A0B8",mw:"1,000 MW",date:"2025-08-27"},
 {name:"Hoxter Battery Park Acquisition",lat:51.775,lon:9.3833,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"130 MW",date:"2025-08-27"},
+{name:"Harmony Energy Topco Private Capital Fundraise",lat:51.128,lon:-3.0038,country:"United Kingdom",type:"Equity",color:"#A0A0B8",mw:"1,000 MW",date:"2025-08-27"},
 {name:"Green Genius Izabelinė and Lieponys Solar+BESS Projects",lat:54.6833,lon:25.2,country:"Lithuania",type:"Project finance",color:"#4472C4",mw:"18 MW",date:"2025-08-19"},
-{name:"BESS Waltershausen",lat:50.8986,lon:10.5561,country:"Germany",type:"Project finance",color:"#4472C4",mw:"10 MW",date:"2025-08-07"},
 {name:"Staythorpe BESS",lat:53.0667,lon:-0.8833,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"360 MW",date:"2025-08-15"},
+{name:"BESS Waltershausen",lat:50.8986,lon:10.5561,country:"Germany",type:"Project finance",color:"#4472C4",mw:"10 MW",date:"2025-08-07"},
 {name:"Shetland Standby Project - Lerwick BESS",lat:60.155,lon:-1.145,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"68 MW",date:"2025-07-30"},
 {name:"DB Energie-EVB Beckum BESS Flexibility Agreement",lat:51.7547,lon:8.0406,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"20 MW",date:"2025-07-24"},
 {name:"Förderstedt 300 MW Battery Storage Project",lat:51.9333,lon:11.6167,country:"Germany",type:"Project finance",color:"#4472C4",mw:"300 MW",date:"2025-07-14"},
 {name:"Luxcara Waltrop BESS Acquisition",lat:51.6167,lon:7.4,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"520 MW",date:"2025-07-02"},
 {name:"Giga Albatross BESS Acquisition",lat:52.2333,lon:7.3667,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"350 MW",date:"2025-07-01"},
+{name:"EWR AG Worms 30 MW Battery Storage Project",lat:49.6328,lon:8.3567,country:"Germany",type:"Project finance",color:"#4472C4",mw:"30 MW",date:"2025-06-23"},
 {name:"Econergy Brandenburg BESS Acquisition",lat:51.525,lon:14.0,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"100 MW",date:"2025-06-12"},
 {name:"GIGA Leopard Battery Storage Project",lat:53.3333,lon:6.9167,country:"Netherlands",type:"Project finance",color:"#4472C4",mw:"300 MW",date:"2025-06-02"},
 {name:"Energix Polska Nowe Czarnowo I & II BESS Project Finance",lat:53.25,lon:14.55,country:"Poland",type:"Project finance",color:"#4472C4",mw:"24 MW",date:"2025-06-01"},
@@ -129,31 +140,20 @@
 {name:"Project Sophocles Solar and Battery Green Loan",lat:41.9028,lon:12.4964,country:"Italy",type:"Project finance",color:"#4472C4",mw:"350 MW",date:"2025-05-16"},
 {name:"ENGIE-Terralayr Mini Toll Framework Agreement",lat:52.52,lon:13.405,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"",date:"2025-05-06"},
 {name:"Vattenfall-Terralayr Multi-Site Virtual BESS Tolling Agreement",lat:52.52,lon:13.405,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"55 MW",date:"2025-05-05"},
-{name:"Obton German BESS Portfolio Subordinated Debt Financing",lat:53.55,lon:9.99,country:"Germany",type:"Project finance",color:"#4472C4",mw:"137.5 MW",date:"2025-04-28"},
+{name:"Obton German BESS Portfolio Subordinated Debt Financing",lat:53.55,lon:9.99,country:"Germany",type:"Project finance",color:"#4472C4",mw:"138 MW",date:"2025-04-28"},
 {name:"Zenobē Eccles 400MW Battery Storage Financing",lat:53.4833,lon:-2.3333,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"400 MW",date:"2025-03-18"},
 {name:"Stendal Battery Storage Project",lat:52.6069,lon:11.8594,country:"Germany",type:"Project finance",color:"#4472C4",mw:"209 MW",date:"2025-03-05"},
 {name:"Bramley BESS",lat:51.335,lon:-0.7567,country:"United Kingdom",type:"Offtake",color:"#F5D5B0",mw:"100 MW",date:"2025-02-21"},
 {name:"Lion Storage Mufasa Project",lat:51.4433,lon:3.5714,country:"Netherlands",type:"Project finance",color:"#4472C4",mw:"350 MW",date:"2025-02-19"},
+{name:"Elsewedy Electric 50MW/100MWh Greece BESS",lat:38.3167,lon:23.6333,country:"Greece",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-01-20"},
 {name:"Partners Group investment in green flexibility BESS platform",lat:47.65,lon:10.4,country:"Germany",type:"Equity",color:"#A0A0B8",mw:"",date:"2025-01-16"},
+{name:"Eneco Dronten BESS Project Finance",lat:52.5167,lon:5.7167,country:"Netherlands",type:"Project finance",color:"#4472C4",mw:"32 MW",date:"2025-01-10"},
 {name:"ib vogt Greece Solar+Storage Portfolio Sale to Faria Renewables",lat:39.18,lon:22.75,country:"Greece",type:"M&A",color:"#2F9FC4",mw:"",date:"2025-01-10"},
-{name:"Eneco Dronten BESS Project Finance",lat:52.5167,lon:5.7167,country:"Netherlands",type:"Project finance",color:"#4472C4",mw:"31.6 MW",date:"2025-01-10"},
 {name:"Return Energy APG equity investment",lat:52.3676,lon:4.9041,country:"Netherlands",type:"Equity",color:"#A0A0B8",mw:"5,000 MW",date:"2025-01-01"},
-{name:"RWE Pembroke Battery Storage FID",lat:51.6833,lon:-4.9167,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"350 MW",date:"2025-01-01"},
-{name:"EP Group North Baddesley BESS with GridBeyond",lat:50.9833,lon:-1.4333,country:"United Kingdom",type:"Offtake",color:"#F5D5B0",mw:"50 MW",date:"2025-11-26"},
-{name:"ju:niz Energy 100 MWh BESS Portfolio",lat:48.1717,lon:11.7167,country:"Germany",type:"Project finance",color:"#4472C4",mw:"",date:"2025-11-12"},
-{name:"EWR AG Worms 30 MW Battery Storage Project",lat:49.6328,lon:8.3567,country:"Germany",type:"Project finance",color:"#4472C4",mw:"30 MW",date:"2025-06-23"},
-{name:"Premier Energy Group Romania 200MW/400MWh BESS Acquisition",lat:47.1585,lon:27.6014,country:"Romania",type:"M&A",color:"#2F9FC4",mw:"200 MW",date:"2025-11-21"},
-{name:"Ric Energy Apulia 200MW BESS Acquisition",lat:41.0,lon:16.5,country:"Italy",type:"M&A",color:"#2F9FC4",mw:"200 MW",date:"2025-11-25"},
-{name:"Kallima Tihange BESS Financing",lat:50.5333,lon:5.2833,country:"Belgium",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-12-15"},
-{name:"Giga Storage Project Leopard Tolling Agreement",lat:53.3333,lon:6.9167,country:"Netherlands",type:"Offtake",color:"#F5D5B0",mw:"300 MW",date:"2025-12-01"},
-{name:"Ganfeng Lithium Kintore BESS RTM Deal",lat:57.2333,lon:-2.35,country:"United Kingdom",type:"Offtake",color:"#F5D5B0",mw:"50 MW",date:"2025-11-26"},
-{name:"Green Flexibility and Hansa Battery 500 MW BESS Portfolio Acquisition",lat:47.65,lon:10.4,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"500 MW",date:"2025-11-05"},
-{name:"Kvosted Solar Park BESS Optimisation Deal",lat:56.4528,lon:9.4019,country:"Denmark",type:"Offtake",color:"#F5D5B0",mw:"",date:"2025-12-29"},
-{name:"Elsewedy Electric 50MW/100MWh Greece BESS",lat:38.3167,lon:23.6333,country:"Greece",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-01-20"}
+{name:"RWE Pembroke Battery Storage FID",lat:51.6833,lon:-4.9167,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"350 MW",date:"2025-01-01"}
 ];
-        const dealCountryNames = new Set(["United Kingdom", "Germany", "France", "Italy", "Netherlands", "Poland", "Finland", "Romania", "Greece", "Denmark", "Lithuania", "Belgium"]);
+        const dealCountryNames = new Set(["Belgium", "Denmark", "Finland", "France", "Germany", "Greece", "Italy", "Lithuania", "Netherlands", "Poland", "Romania", "United Kingdom"]);
 
-        // Pre-compute radius from MW string BEFORE any async code
         const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
         const maxMW = Math.max(...deals.map(d => parseMW(d.mw))) || 1;
         deals.forEach(d => {
@@ -178,7 +178,6 @@
             .attr("height", height)
             .attr("viewBox", `0 0 ${width} ${height}`);
 
-        // Clip path to hide areas outside the viewport
         svg.append("defs").append("clipPath")
             .attr("id", "map-clip")
             .append("rect")
@@ -187,7 +186,6 @@
 
         const mapGroup = svg.append("g").attr("clip-path", "url(#map-clip)");
 
-        // Ocean background
         mapGroup.append("rect")
             .attr("width", width)
             .attr("height", height)
@@ -195,7 +193,6 @@
 
         const tooltip = d3.select("#tooltip");
 
-        // Load TopoJSON
         d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json").then(function(world) {
             const countries = topojson.feature(world, world.objects.countries);
 
@@ -209,7 +206,7 @@
                 "203": "Czech Republic", "703": "Slovakia", "348": "Hungary",
                 "191": "Croatia", "705": "Slovenia", "100": "Bulgaria",
                 "804": "Ukraine", "112": "Belarus", "498": "Moldova",
-                "642": "Romania", "688": "Serbia", "070": "Bosnia and Herzegovina",
+                "688": "Serbia", "070": "Bosnia and Herzegovina",
                 "499": "Montenegro", "807": "North Macedonia", "008": "Albania",
                 "578": "Norway", "352": "Iceland", "233": "Estonia",
                 "428": "Latvia", "442": "Luxembourg", "470": "Malta",
@@ -261,6 +258,7 @@
                     tooltip.style("opacity", 0);
                 });
         });
+    
     </script>
 </body>
 </html>
