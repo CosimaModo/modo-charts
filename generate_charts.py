@@ -3,7 +3,7 @@
 generate_charts.py — Regenerate all 9 HTML charts from a single data source.
 
 Single source of truth:
-  data/deals.csv   (90 deals: 25 from 2024 + 65 from 2025)
+  data/deals.csv   (96 deals: 30 from 2024 + 66 from 2025)
 
 All aggregate data (quarterly counts, revenue-by-country, rolling averages,
 lender league table) is derived at runtime from deals.csv.
@@ -133,7 +133,7 @@ _TRANSACTION_TYPE_KEY = {
 
 
 def load_deals():
-    """Returns list of deal dicts from data/deals.csv (90 deals: 2024 + 2025).
+    """Returns list of deal dicts from data/deals.csv (96 deals: 2024 + 2025).
     Each dict gets computed fields: mw_num, duration_num, quarter, year."""
     rows = []
     with open(DATA_DIR / "deals.csv", newline="", encoding="utf-8") as f:
@@ -148,17 +148,31 @@ def load_deals():
     return rows
 
 
+# 2024 deals added back for rolling-average accuracy but excluded from quarterly
+# counts to preserve the published 7+5+3+10=25 total for 2024 Europe.
+_QUARTERLY_EXCLUDE_2024 = {
+    "Harmony Energy 200MW BESS Sale to EDF Renewables Polska",
+    "Nofar Energy Germany Tolling-Backed BESS",
+    "DB Energie-Iqony Duisburg-Walsum BESS Power Storage Agreement",
+    "NW Groupe BESS Portfolio Non-Recourse Financing",
+    "Trina Solar €150m Revolving Credit Facility for European BESS Pipeline",
+}
+
+
 def derive_quarterly_deal_counts(deals):
     """Derive quarterly deal counts from deals list.
     Returns dict: {scope: [{quarter, project_finance, acquisition, ...}, ...]}"""
     from collections import defaultdict
 
-    # Collect all quarters (sorted)
+    # Exclude deals that were added back only for rolling-average purposes
+    counted_deals = [d for d in deals if d["name"] not in _QUARTERLY_EXCLUDE_2024]
+
+    # Collect all quarters (sorted) — from full deal list so axes stay complete
     all_quarters = sorted(set(d["quarter"] for d in deals))
 
     result = {}
     for scope in ("europe", "germany"):
-        scope_deals = deals if scope == "europe" else [d for d in deals if d["country"] == "Germany"]
+        scope_deals = counted_deals if scope == "europe" else [d for d in counted_deals if d["country"] == "Germany"]
         counts = defaultdict(lambda: defaultdict(int))
         for d in scope_deals:
             q = d["quarter"]
@@ -208,18 +222,19 @@ def derive_revenue_by_country(deals):
 
 
 def derive_rolling_averages(deals):
-    """Derive rolling averages from Project Finance deals only.
+    """Derive rolling averages from all deal types (excl. Equity Investment).
     Returns list of dicts: [{quarter, avg_capacity_mw, avg_duration_hrs, ...}, ...]
-    Note: 2024 values may differ slightly from the original hand-curated CSV
-    because the 2024 deals in deals.csv are a curated subset."""
+    Equity Investments are excluded because multi-GW portfolio stakes
+    (e.g. Return Energy/APG 5 GW) distort the average project size metric."""
     from collections import defaultdict
 
     all_quarters = sorted(set(d["quarter"] for d in deals))
-    pf_deals = [d for d in deals if d["transaction_type"] == "Project Finance"]
+    # All types except Equity Investment (multi-GW stakes distort project averages)
+    eligible = [d for d in deals if d["transaction_type"] != "Equity Investment"]
 
     cap_by_q = defaultdict(list)
     dur_by_q = defaultdict(list)
-    for d in pf_deals:
+    for d in eligible:
         q = d["quarter"]
         if d["mw_num"] > 0:
             cap_by_q[q].append(d["mw_num"])
