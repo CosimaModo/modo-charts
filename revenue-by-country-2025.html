@@ -36,15 +36,15 @@
   <div class="chart-scroll">
     <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
     <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.1.min.js" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" crossorigin="anonymous"></script>
-    <div id="revenuebycountry2025" style="height:380px; min-width:700px;"></div>
+    <div id="revenuebycountry2025" style="height:420px; min-width:700px;"></div>
     <script type="text/javascript">
       window.PLOTLYENV=window.PLOTLYENV || {};
       if (document.getElementById("revenuebycountry2025")) {
         Plotly.newPlot("revenuebycountry2025", [
-          {"hovertemplate": "Merchant: %{x}<extra></extra>", "marker": {"color": "#B8CCE4", "line": {"width": 0}}, "name": "Merchant", "orientation": "h", "x": [0, 0, 3, 1, 1, 0, 1, 9, 13], "y": ["France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"},
-          {"hovertemplate": "Tolling: %{x}<extra></extra>", "marker": {"color": "#4472C4", "line": {"width": 0}}, "name": "Tolling", "orientation": "h", "x": [1, 0, 0, 2, 0, 0, 1, 3, 7], "y": ["France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"},
-          {"hovertemplate": "Hybrid: %{x}<extra></extra>", "marker": {"color": "#A0A0B8", "line": {"width": 0}}, "name": "Hybrid", "orientation": "h", "x": [0, 1, 0, 0, 2, 1, 3, 3, 2], "y": ["France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"},
-          {"hovertemplate": "Undisclosed: %{x}<extra></extra>", "marker": {"color": "#E0E0E8", "line": {"width": 0}}, "name": "Undisclosed", "orientation": "h", "x": [1, 1, 0, 0, 0, 3, 0, 1, 4], "y": ["France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"}
+          {"hovertemplate": "Merchant: %{x}<extra></extra>", "marker": {"color": "#B8CCE4", "line": {"width": 0}}, "name": "Merchant", "orientation": "h", "x": [0, 0, 0, 3, 1, 1, 0, 1, 9, 13], "y": ["Other", "France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"},
+          {"hovertemplate": "Tolling: %{x}<extra></extra>", "marker": {"color": "#4472C4", "line": {"width": 0}}, "name": "Tolling", "orientation": "h", "x": [0, 1, 0, 0, 2, 0, 0, 1, 3, 7], "y": ["Other", "France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"},
+          {"hovertemplate": "Hybrid: %{x}<extra></extra>", "marker": {"color": "#A0A0B8", "line": {"width": 0}}, "name": "Hybrid", "orientation": "h", "x": [0, 0, 1, 0, 0, 2, 1, 3, 3, 2], "y": ["Other", "France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"},
+          {"hovertemplate": "Undisclosed: %{x}<extra></extra>", "marker": {"color": "#E0E0E8", "line": {"width": 0}}, "name": "Undisclosed", "orientation": "h", "x": [3, 1, 1, 0, 0, 0, 3, 0, 0, 3], "y": ["Other", "France", "Greece", "Romania", "Finland", "Poland", "Italy", "Netherlands", "United Kingdom", "Germany"], "type": "bar"}
         ], {
           "font": {"family": "DM Sans, Arial, sans-serif", "size": 12, "color": "#1A1A2E"},
           "legend": {"font": {"size": 11, "color": "#1A1A2E"}, "orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "left", "x": 0.0, "traceorder": "normal", "itemsizing": "constant", "bgcolor": "rgba(0,0,0,0)"},
@@ -53,11 +53,12 @@
           "paper_bgcolor": "white",
           "plot_bgcolor": "white",
           "bargap": 0.25,
-          "xaxis": {"showgrid": false, "showline": false, "showticklabels": false, "zeroline": false, "range": [0, 29]},
+          "xaxis": {"showgrid": false, "showline": false, "showticklabels": false, "zeroline": false, "range": [0, 28]},
           "yaxis": {"tickfont": {"size": 11, "color": "#1A1A2E"}, "showgrid": false, "showline": false, "automargin": true},
           "margin": {"l": 100, "r": 40, "t": 30, "b": 30},
-          "height": 380,
+          "height": 420,
           "annotations": [
+            {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "3", "x": 3.3, "xanchor": "left", "y": "Other", "yanchor": "middle"},
             {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "2", "x": 2.3, "xanchor": "left", "y": "France", "yanchor": "middle"},
             {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "2", "x": 2.3, "xanchor": "left", "y": "Greece", "yanchor": "middle"},
             {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "3", "x": 3.3, "xanchor": "left", "y": "Romania", "yanchor": "middle"},
@@ -65,8 +66,8 @@
             {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "3", "x": 3.3, "xanchor": "left", "y": "Poland", "yanchor": "middle"},
             {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "4", "x": 4.3, "xanchor": "left", "y": "Italy", "yanchor": "middle"},
             {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "5", "x": 5.3, "xanchor": "left", "y": "Netherlands", "yanchor": "middle"},
-            {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "16", "x": 16.3, "xanchor": "left", "y": "United Kingdom", "yanchor": "middle"},
-            {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "26", "x": 26.3, "xanchor": "left", "y": "Germany", "yanchor": "middle"}
+            {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "15", "x": 15.3, "xanchor": "left", "y": "United Kingdom", "yanchor": "middle"},
+            {"font": {"color": "#1A1A2E", "family": "DM Sans, Arial, sans-serif", "size": 11}, "showarrow": false, "text": "25", "x": 25.3, "xanchor": "left", "y": "Germany", "yanchor": "middle"}
           ]
         }, {"displayModeBar": false, "displaylogo": false, "responsive": true});
       };

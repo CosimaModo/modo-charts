@@ -110,7 +110,6 @@
 {name:"ADS-TEC Energy 1 GW / 2 GWh BESS Southern Germany",lat:48.625,lon:9.3417,country:"Germany",type:"Project finance",color:"#4472C4",mw:"1,000 MW",date:"2025-09-26"},
 {name:"Terra One €150m Mezzanine Financing for 3GWh Germany BESS Pipeline",lat:52.52,lon:13.405,country:"Germany",type:"Project finance",color:"#4472C4",mw:"500 MW",date:"2025-09-18"},
 {name:"Kallista Energy Saleux BESS",lat:49.85,lon:2.25,country:"France",type:"Project finance",color:"#4472C4",mw:"120 MW",date:"2025-09-04"},
-{name:"Q ENERGY Taurus B Spanish Hybrid Solar Portfolio",lat:43.36,lon:-5.84,country:"Spain",type:"Project finance",color:"#4472C4",mw:"100 MW",date:"2025-09-03"},
 {name:"Fidra Energy Thorpe Marsh BESS Project Finance",lat:53.5833,lon:-1.0667,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"1,450 MW",date:"2025-09-01"},
 {name:"Harmony Energy Topco Private Capital Fundraise",lat:51.128,lon:-3.0038,country:"United Kingdom",type:"Equity",color:"#A0A0B8",mw:"1,000 MW",date:"2025-08-27"},
 {name:"Hoxter Battery Park Acquisition",lat:51.775,lon:9.3833,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"130 MW",date:"2025-08-27"},
@@ -120,7 +119,6 @@
 {name:"Shetland Standby Project - Lerwick BESS",lat:60.155,lon:-1.145,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"68 MW",date:"2025-07-30"},
 {name:"DB Energie-EVB Beckum BESS Flexibility Agreement",lat:51.7547,lon:8.0406,country:"Germany",type:"Offtake",color:"#F5D5B0",mw:"20 MW",date:"2025-07-24"},
 {name:"Förderstedt 300 MW Battery Storage Project",lat:51.9333,lon:11.6167,country:"Germany",type:"Project finance",color:"#4472C4",mw:"300 MW",date:"2025-07-14"},
-{name:"Harmony Energy Income Trust - BESS Portfolio Acquisition",lat:51.128,lon:-3.0038,country:"United Kingdom",type:"M&A",color:"#2F9FC4",mw:"400 MW",date:"2025-07-09"},
 {name:"Luxcara Waltrop BESS Acquisition",lat:51.6167,lon:7.4,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"520 MW",date:"2025-07-02"},
 {name:"Giga Albatross BESS Acquisition",lat:52.2333,lon:7.3667,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"350 MW",date:"2025-07-01"},
 {name:"Econergy Brandenburg BESS Acquisition",lat:51.525,lon:14.0,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"100 MW",date:"2025-06-12"},
@@ -141,7 +139,6 @@
 {name:"Eneco Dronten BESS Project Finance",lat:52.5167,lon:5.7167,country:"Netherlands",type:"Project finance",color:"#4472C4",mw:"31.6 MW",date:"2025-01-10"},
 {name:"Return Energy APG equity investment",lat:52.3676,lon:4.9041,country:"Netherlands",type:"Equity",color:"#A0A0B8",mw:"5,000 MW",date:"2025-01-01"},
 {name:"RWE Pembroke Battery Storage FID",lat:51.6833,lon:-4.9167,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"350 MW",date:"2025-01-01"},
-{name:"Green Flexibility German BESS Pipeline Financing",lat:47.65,lon:10.4,country:"Germany",type:"Project finance",color:"#4472C4",mw:"",date:"2025-01-16"},
 {name:"EP Group North Baddesley BESS with GridBeyond",lat:50.9833,lon:-1.4333,country:"United Kingdom",type:"Offtake",color:"#F5D5B0",mw:"50 MW",date:"2025-11-26"},
 {name:"ju:niz Energy 100 MWh BESS Portfolio",lat:48.1717,lon:11.7167,country:"Germany",type:"Project finance",color:"#4472C4",mw:"",date:"2025-11-12"},
 {name:"EWR AG Worms 30 MW Battery Storage Project",lat:49.6328,lon:8.3567,country:"Germany",type:"Project finance",color:"#4472C4",mw:"30 MW",date:"2025-06-23"},
@@ -154,14 +151,14 @@
 {name:"Kvosted Solar Park BESS Optimisation Deal",lat:56.4528,lon:9.4019,country:"Denmark",type:"Offtake",color:"#F5D5B0",mw:"",date:"2025-12-29"},
 {name:"Elsewedy Electric 50MW/100MWh Greece BESS",lat:38.3167,lon:23.6333,country:"Greece",type:"Project finance",color:"#4472C4",mw:"50 MW",date:"2025-01-20"}
 ];
-        const dealCountryNames = new Set(["United Kingdom", "Germany", "France", "Italy", "Spain", "Netherlands", "Poland", "Finland", "Romania", "Greece", "Denmark", "Lithuania", "Belgium"]);
+        const dealCountryNames = new Set(["United Kingdom", "Germany", "France", "Italy", "Netherlands", "Poland", "Finland", "Romania", "Greece", "Denmark", "Lithuania", "Belgium"]);
 
         // Pre-compute radius from MW string BEFORE any async code
         const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
         const maxMW = Math.max(...deals.map(d => parseMW(d.mw))) || 1;
         deals.forEach(d => {
             const mwVal = parseMW(d.mw);
-            d.radius = mwVal > 0 ? 4 + (Math.sqrt(mwVal / maxMW) * 24) : 5;
+            d.radius = mwVal > 0 ? 3 + (Math.sqrt(mwVal / maxMW) * 16) : 4;
             d.capacity = d.mw || "Undisclosed";
         });
 
