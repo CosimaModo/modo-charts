@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-generate_charts.py — Regenerate all 9 HTML charts from canonical CSVs.
+generate_charts.py — Regenerate all 9 HTML charts from a single data source.
 
-Reads data from:
-  data/quarterly_deal_counts.csv
-  data/revenue_by_country.csv
-  data/rolling_averages.csv
-  data/deals.csv
-  data/lender_deals.csv
+Single source of truth:
+  data/deals.csv   (90 deals: 25 from 2024 + 65 from 2025)
+
+All aggregate data (quarterly counts, revenue-by-country, rolling averages,
+lender league table) is derived at runtime from deals.csv.
+
+To add a deal: edit deals.csv, run this script, push to GitHub Pages.
 
 Generates (Plotly):
   deal-types-2025.html
@@ -111,93 +112,238 @@ def _deal_hash_color(name):
 
 
 # ── Data loading ─────────────────────────────────────────────────────
-
-def load_quarterly_deal_counts():
-    """Returns dict: {scope: [{quarter, project_finance, ...}, ...]}"""
-    rows = []
-    with open(DATA_DIR / "quarterly_deal_counts.csv", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            for dt in DEAL_TYPES:
-                row[dt] = int(row[dt])
-            rows.append(row)
-    result = {}
-    for row in rows:
-        scope = row["scope"]
-        if scope not in result:
-            result[scope] = []
-        result[scope].append(row)
-    return result
+# All data is derived from the single canonical file: data/deals.csv
 
 
-def load_revenue_by_country():
-    """Returns list of dicts: [{country, merchant, tolling, hybrid, undisclosed}, ...]"""
-    rows = []
-    with open(DATA_DIR / "revenue_by_country.csv", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            for key in ["merchant", "tolling", "hybrid", "undisclosed"]:
-                row[key] = int(row[key])
-            rows.append(row)
-    return rows
+def _quarter_of(date_str):
+    """Return 'Q1 2024' etc. from an ISO date string."""
+    parts = date_str.split("-")
+    year = parts[0]
+    month = int(parts[1]) if len(parts) > 1 else 1
+    q = (month - 1) // 3 + 1
+    return f"Q{q} {year}"
 
 
-def load_rolling_averages():
-    """Returns list of dicts: [{quarter, avg_capacity_mw, ...}, ...]"""
-    rows = []
-    with open(DATA_DIR / "rolling_averages.csv", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            row["avg_capacity_mw"] = int(row["avg_capacity_mw"])
-            row["avg_duration_hrs"] = float(row["avg_duration_hrs"])
-            row["n_deals_capacity"] = int(row["n_deals_capacity"])
-            row["n_deals_duration"] = int(row["n_deals_duration"])
-            rows.append(row)
-    return rows
+_TRANSACTION_TYPE_KEY = {
+    "Project Finance": "project_finance",
+    "Acquisition": "acquisition",
+    "Equity Investment": "equity_investment",
+    "Offtake Agreement": "offtake_agreement",
+}
 
 
 def load_deals():
-    """Returns list of deal dicts from data/deals.csv (2025 deal-level data)."""
+    """Returns list of deal dicts from data/deals.csv (90 deals: 2024 + 2025).
+    Each dict gets computed fields: mw_num, duration_num, quarter, year."""
     rows = []
-    with open(DATA_DIR / "deals.csv", newline="") as f:
+    with open(DATA_DIR / "deals.csv", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             row["mw_num"] = _parse_num(row["mw"])
+            dur = row.get("duration_hrs", "").strip()
+            row["duration_num"] = float(dur) if dur else 0
+            row["quarter"] = _quarter_of(row["date"])
+            row["year"] = row["date"][:4]
             rows.append(row)
     return rows
 
 
-def load_lender_deals():
-    """Returns list of lender dicts, each with a deals list for bar segments."""
-    lenders = []
-    current = None
-    with open(DATA_DIR / "lender_deals.csv", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            name = row["lender"]
-            if current is None or current["lender"] != name:
-                if current:
-                    lenders.append(current)
-                current = {
-                    "lender": name,
-                    "deal_count": int(row["deal_count"]),
-                    "total_mw": _parse_num(row["total_mw"]),
-                    "energy_mwh": row["energy_mwh"].strip(),
-                    "countries": row["countries"].strip(),
-                    "deals": [],
-                }
-            deal_mw = _parse_num(row.get("deal_mw", ""))
-            deal_name = row.get("deal_name", "").strip()
-            deal_sponsor = row.get("deal_sponsor", "").strip()
-            if deal_mw > 0 and deal_name:
-                current["deals"].append({
-                    "name": deal_name,
-                    "sponsor": deal_sponsor,
-                    "mw": deal_mw,
+def derive_quarterly_deal_counts(deals):
+    """Derive quarterly deal counts from deals list.
+    Returns dict: {scope: [{quarter, project_finance, acquisition, ...}, ...]}"""
+    from collections import defaultdict
+
+    # Collect all quarters (sorted)
+    all_quarters = sorted(set(d["quarter"] for d in deals))
+
+    result = {}
+    for scope in ("europe", "germany"):
+        scope_deals = deals if scope == "europe" else [d for d in deals if d["country"] == "Germany"]
+        counts = defaultdict(lambda: defaultdict(int))
+        for d in scope_deals:
+            q = d["quarter"]
+            tt_key = _TRANSACTION_TYPE_KEY.get(d["transaction_type"], "")
+            if tt_key:
+                counts[q][tt_key] += 1
+        rows = []
+        for q in all_quarters:
+            row = {"quarter": q, "scope": scope}
+            for dt in DEAL_TYPES:
+                row[dt] = counts[q].get(dt, 0)
+            rows.append(row)
+        result[scope] = rows
+    return result
+
+
+def derive_revenue_by_country(deals):
+    """Derive revenue-by-country from 2025 deals.
+    Returns list of dicts: [{country, merchant, tolling, hybrid, undisclosed}, ...]"""
+    from collections import defaultdict
+
+    TOP_COUNTRIES = [
+        "Germany", "United Kingdom", "Netherlands", "Italy",
+        "Poland", "Finland", "Romania", "Greece", "France",
+    ]
+    REV_TYPES = ["merchant", "tolling", "hybrid", "undisclosed"]
+
+    counts = defaultdict(lambda: defaultdict(int))
+    for d in deals:
+        if d["year"] != "2025":
+            continue
+        rm = d.get("revenue_model", "").strip()
+        if rm == "ppa":
+            rm = "hybrid"
+        if rm not in REV_TYPES:
+            continue
+        country = d["country"] if d["country"] in TOP_COUNTRIES else "Other"
+        counts[country][rm] += 1
+
+    rows = []
+    for country in TOP_COUNTRIES + ["Other"]:
+        row = {"country": country}
+        for rt in REV_TYPES:
+            row[rt] = counts[country].get(rt, 0)
+        rows.append(row)
+    return rows
+
+
+def derive_rolling_averages(deals):
+    """Derive rolling averages from Project Finance deals only.
+    Returns list of dicts: [{quarter, avg_capacity_mw, avg_duration_hrs, ...}, ...]
+    Note: 2024 values may differ slightly from the original hand-curated CSV
+    because the 2024 deals in deals.csv are a curated subset."""
+    from collections import defaultdict
+
+    all_quarters = sorted(set(d["quarter"] for d in deals))
+    pf_deals = [d for d in deals if d["transaction_type"] == "Project Finance"]
+
+    cap_by_q = defaultdict(list)
+    dur_by_q = defaultdict(list)
+    for d in pf_deals:
+        q = d["quarter"]
+        if d["mw_num"] > 0:
+            cap_by_q[q].append(d["mw_num"])
+        if d["duration_num"] > 0:
+            dur_by_q[q].append(d["duration_num"])
+
+    rows = []
+    for q in all_quarters:
+        caps = cap_by_q.get(q, [])
+        durs = dur_by_q.get(q, [])
+        avg_cap = round(sum(caps) / len(caps)) if caps else 0
+        avg_dur = round(sum(durs) / len(durs), 1) if durs else 0
+        rows.append({
+            "quarter": q,
+            "avg_capacity_mw": avg_cap,
+            "avg_duration_hrs": avg_dur,
+            "n_deals_capacity": len(caps),
+            "n_deals_duration": len(durs),
+        })
+    return rows
+
+
+# ── Lender derivation constants ──────────────────────────────────────
+
+_LENDER_NAME_MAP = {
+    "Kommunalkredit Austria AG": "Kommunalkredit",
+    "Société Générale S.A.": "Société Générale",
+    "Hamburg Commercial Bank AG": "HCOB",
+    "Deutsche Kreditbank AG": "DKB",
+    "National Westminster Bank Plc": "NatWest",
+    "KfW IPEX-BANK": "KfW IPEX-Bank",
+    "National Bank of Greece S.A.": "National Bank of Greece",
+    "Berenberg Green Energy Debt Funds": "Berenberg",
+    "KKR Capital Markets Partners LLP": "KKR",
+    "Santander Bank Polska": "Santander",
+    "Santander CIB": "Santander",
+    "Santander UK": "Santander",
+    "Landesbank Saar": "SaarLB",
+    "DAL Deutsche Anlagen-Leasing": "DAL / Deutsche Leasing",
+}
+
+_LENDER_EXCLUDE = {
+    "Deutsche Anlagen-Leasing",
+    "Deutsche Leasing Finance",
+    "Goldman Sachs Alternatives",
+    "Private Credit at Goldman Sachs Alternatives",
+    "Aviva Investors",
+    "Debt fund",
+    "Syndicate of energy transition lenders",
+    "8 European lenders",
+    "Club of 8 European lenders",
+    "European Union Recovery and Resilience Fund",
+}
+
+
+def _parse_lender_names(lender_str):
+    """Parse semicolon-separated lender string into list of clean names."""
+    import re
+    if not lender_str or not lender_str.strip():
+        return []
+    names = []
+    for part in lender_str.split(";"):
+        part = part.strip()
+        if not part:
+            continue
+        # Skip "+N" entries
+        if re.match(r"^\+\d+$", part):
+            continue
+        # Strip trailing "+N" from last lender
+        part = re.sub(r"\s*\+\d+$", "", part)
+        if not part:
+            continue
+        # Apply name mapping
+        mapped = _LENDER_NAME_MAP.get(part, part)
+        # Check exclusion
+        if mapped in _LENDER_EXCLUDE or part in _LENDER_EXCLUDE:
+            continue
+        names.append(mapped)
+    return names
+
+
+def derive_lender_data(deals):
+    """Derive lender league table from 2025 Project Finance deals.
+    Returns list of lender dicts matching the format expected by generate_top_lenders_chart."""
+    from collections import defaultdict
+
+    pf_2025 = [d for d in deals if d["year"] == "2025" and d["transaction_type"] == "Project Finance"]
+
+    lender_deals = defaultdict(list)
+    for d in pf_2025:
+        lender_names = _parse_lender_names(d.get("lender", ""))
+        for lname in lender_names:
+            lender_deals[lname].append(d)
+
+    lender_list = []
+    for lname, ld in lender_deals.items():
+        total_mw = sum(d["mw_num"] for d in ld)
+        # Compute energy (MWh) from MW * duration
+        energy_vals = []
+        for d in ld:
+            if d["mw_num"] > 0 and d["duration_num"] > 0:
+                energy_vals.append(d["mw_num"] * d["duration_num"])
+        energy_mwh = f"{int(sum(energy_vals)):,}" if energy_vals else "-"
+        countries = ", ".join(sorted(set(d["country"] for d in ld)))
+        deal_details = []
+        for d in sorted(ld, key=lambda x: x["mw_num"], reverse=True):
+            if d["mw_num"] > 0:
+                deal_details.append({
+                    "name": d["name"],
+                    "sponsor": d["lead_sponsor"],
+                    "mw": d["mw_num"],
                 })
-        if current:
-            lenders.append(current)
-    return lenders
+        lender_list.append({
+            "lender": lname,
+            "deal_count": len(ld),
+            "total_mw": total_mw,
+            "energy_mwh": energy_mwh,
+            "countries": countries,
+            "deals": deal_details,
+        })
+
+    # Sort by deal_count desc, then total_mw desc
+    lender_list.sort(key=lambda x: (-x["deal_count"], -x["total_mw"]))
+    return lender_list
 
 
 # ── HTML wrapper (new Modo CSS template) ─────────────────────────────
@@ -1257,12 +1403,18 @@ def generate_europe_map_chart(deals, check=False):
 def main():
     check = "--check" in sys.argv
 
-    print("Loading canonical data...")
-    quarterly = load_quarterly_deal_counts()
-    country = load_revenue_by_country()
-    averages = load_rolling_averages()
+    print("Loading deals.csv (single source of truth)...")
     deals = load_deals()
-    lender_data = load_lender_deals()
+
+    n_2024 = sum(1 for d in deals if d["year"] == "2024")
+    n_2025 = sum(1 for d in deals if d["year"] == "2025")
+    print(f"  {len(deals)} deals total ({n_2024} from 2024, {n_2025} from 2025)")
+
+    print("Deriving aggregate data...")
+    quarterly = derive_quarterly_deal_counts(deals)
+    country = derive_revenue_by_country(deals)
+    averages = derive_rolling_averages(deals)
+    lender_data = derive_lender_data(deals)
 
     # Quick sanity checks
     europe_2024 = sum(
@@ -1281,13 +1433,15 @@ def main():
     print(f"  Europe 2025: {europe_2025} deals")
     print(f"  Europe total: {europe_2024 + europe_2025} deals")
     print(f"  Revenue-by-country total: {country_total} deals (2025 only)")
-    print(f"  Deals CSV: {len(deals)} deals")
-    print(f"  Lender CSV: {len(lender_data)} lenders")
+    print(f"  Lenders: {len(lender_data)}")
     print()
 
     if europe_2025 != country_total:
         print(f"  WARNING: Europe 2025 ({europe_2025}) != revenue-by-country ({country_total})")
         print()
+
+    # Top-15 and map charts only use 2025 deals
+    deals_2025 = [d for d in deals if d["year"] == "2025"]
 
     if check:
         print("Dry run (--check). Data per chart:")
@@ -1298,9 +1452,9 @@ def main():
         generate_germany_chart(quarterly, check=True)
         generate_revenue_by_country_chart(country, check=True)
         generate_rolling_averages_chart(averages, check=True)
-        generate_top15_projects_chart(deals, check=True)
+        generate_top15_projects_chart(deals_2025, check=True)
         generate_top_lenders_chart(lender_data, check=True)
-        generate_europe_map_chart(deals, check=True)
+        generate_europe_map_chart(deals_2025, check=True)
         print()
         print("No files written.")
         return
@@ -1312,11 +1466,11 @@ def main():
     generate_germany_chart(quarterly)
     generate_revenue_by_country_chart(country)
     generate_rolling_averages_chart(averages)
-    generate_top15_projects_chart(deals)
+    generate_top15_projects_chart(deals_2025)
     generate_top_lenders_chart(lender_data)
-    generate_europe_map_chart(deals)
+    generate_europe_map_chart(deals_2025)
     print()
-    print("Done. All 9 charts regenerated from canonical CSVs.")
+    print("Done. All 9 charts regenerated from deals.csv (single source of truth).")
 
 
 if __name__ == "__main__":
