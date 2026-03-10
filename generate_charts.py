@@ -124,6 +124,12 @@ def _quarter_of(date_str):
     return f"Q{q} {year}"
 
 
+def _quarter_sort_key(q_str):
+    """Sort key for 'Q1 2024' → (2024, 1) so quarters sort chronologically."""
+    parts = q_str.split()
+    return (int(parts[1]), int(parts[0][1]))
+
+
 _TRANSACTION_TYPE_KEY = {
     "Project Finance": "project_finance",
     "Acquisition": "acquisition",
@@ -167,8 +173,8 @@ def derive_quarterly_deal_counts(deals):
     # Exclude deals that were added back only for rolling-average purposes
     counted_deals = [d for d in deals if d["name"] not in _QUARTERLY_EXCLUDE_2024]
 
-    # Collect all quarters (sorted) — from full deal list so axes stay complete
-    all_quarters = sorted(set(d["quarter"] for d in deals))
+    # Collect all quarters (chronological) — from full deal list so axes stay complete
+    all_quarters = sorted(set(d["quarter"] for d in deals), key=_quarter_sort_key)
 
     result = {}
     for scope in ("europe", "germany"):
@@ -231,7 +237,7 @@ def derive_rolling_averages(deals):
     (e.g. Return Energy/APG 5 GW) distort the average project size metric."""
     from collections import defaultdict
 
-    all_quarters = sorted(set(d["quarter"] for d in deals))
+    all_quarters = sorted(set(d["quarter"] for d in deals), key=_quarter_sort_key)
     # All types except Equity Investment (multi-GW stakes distort project averages)
     eligible = [d for d in deals if d["transaction_type"] != "Equity Investment"]
 
