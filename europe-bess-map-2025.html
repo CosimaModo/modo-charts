@@ -120,6 +120,7 @@
 {name:"ADS-TEC Energy 1 GW / 2 GWh BESS Southern Germany",lat:48.625,lon:9.3417,country:"Germany",type:"Project finance",color:"#4472C4",mw:"1,000 MW",date:"2025-09-26"},
 {name:"Terra One €150m Mezzanine Financing for 3GWh Germany BESS Pipeline",lat:52.52,lon:13.405,country:"Germany",type:"Project finance",color:"#4472C4",mw:"500 MW",date:"2025-09-18"},
 {name:"Kallista Energy Saleux BESS",lat:49.85,lon:2.25,country:"France",type:"Project finance",color:"#4472C4",mw:"120 MW",date:"2025-09-04"},
+{name:"Q ENERGY Taurus B Spanish Hybrid Solar Portfolio",lat:39.0,lon:-3.0,country:"Spain",type:"Project finance",color:"#4472C4",mw:"100 MW",date:"2025-09-03"},
 {name:"Fidra Energy Thorpe Marsh BESS Project Finance",lat:53.5833,lon:-1.0667,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"1,450 MW",date:"2025-09-01"},
 {name:"Hoxter Battery Park Acquisition",lat:51.775,lon:9.3833,country:"Germany",type:"M&A",color:"#2F9FC4",mw:"130 MW",date:"2025-08-27"},
 {name:"Harmony Energy Topco Private Capital Fundraise",lat:51.128,lon:-3.0038,country:"United Kingdom",type:"Equity",color:"#A0A0B8",mw:"1,000 MW",date:"2025-08-27"},
@@ -152,7 +153,7 @@
 {name:"Return Energy APG equity investment",lat:52.3676,lon:4.9041,country:"Netherlands",type:"Equity",color:"#A0A0B8",mw:"5,000 MW",date:"2025-01-01"},
 {name:"RWE Pembroke Battery Storage FID",lat:51.6833,lon:-4.9167,country:"United Kingdom",type:"Project finance",color:"#4472C4",mw:"350 MW",date:"2025-01-01"}
 ];
-        const dealCountryNames = new Set(["Belgium", "Denmark", "Finland", "France", "Germany", "Greece", "Italy", "Lithuania", "Netherlands", "Poland", "Romania", "United Kingdom"]);
+        const dealCountryNames = new Set(["Belgium", "Denmark", "Finland", "France", "Germany", "Greece", "Italy", "Lithuania", "Netherlands", "Poland", "Romania", "Spain", "United Kingdom"]);
 
         const parseMW = s => { const n = parseFloat((s||"").replace(/,/g,"")); return isNaN(n) ? 0 : n; };
         const maxMW = Math.max(...deals.map(d => parseMW(d.mw))) || 1;
