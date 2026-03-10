@@ -1,0 +1,245 @@
+<!--
+  ============================================================
+  MODO ENERGY — Plotly Chart Template
+  ============================================================
+
+  HOW TO USE:
+  1. Replace the data in the "traces" array with your own data
+  2. Update the title text and subtitle
+  3. Update the source/notes annotation
+  4. Adjust height/width if needed
+  5. Choose the right chart type (bar, scatter, line, etc.)
+
+  DESIGN SYSTEM:
+
+  Typography
+  ──────────
+  Font family:   DM Sans (loaded from Google Fonts)
+  Title size:    18px, bold (<b> tags)
+  Subtitle:      13px, color #8C8CAA (placed as <span> inside title)
+  Axis labels:   11px
+  Legend:         11px
+  Source line:    10px, color #8C8CAA
+  Notes:          9px, color #AAAACC
+  Logo:          16px, bold, letter-spaced "M O D O E N E R G Y"
+
+  Color palette
+  ─────────────
+  Primary blue:      #4472C4   (main bars/lines)
+  Light blue:        #B8CCE4   (secondary bars, lighter category)
+  Muted purple:      #A0A0B8   (tertiary category)
+  Warm sand:         #F5D5B0   (accent/highlight category)
+  Dark navy:         #1A1A2E   (text color, hover background)
+  Muted label:       #8C8CAA   (subtitles, source text)
+  Light label:       #AAAACC   (notes text)
+  Background:        white     (both paper and plot)
+
+  Layout rules
+  ────────────
+  - No gridlines (showgrid: false on both axes)
+  - No axis lines (showline: false)
+  - No y-axis tick labels for bar charts (showticklabels: false)
+  - Bar total annotations above stacked bars
+  - Source line bottom-left, logo bottom-right
+  - Horizontal legend above chart (orientation: "h")
+  - Margins: top 100, bottom 100, left 30, right 40
+  - Bar gap: 0.25
+  - Hover: dark background (#1A1A2E), white text, no border
+  - Config: no mode bar, no logo, responsive
+
+  ============================================================
+-->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div>
+    <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+    <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script>
+
+    <div id="chart" class="plotly-graph-div" style="height:480px; width:800px;"></div>
+
+    <script type="text/javascript">
+      // ── DATA TRACES ──────────────────────────────────────
+      // Replace with your own data. Each trace is one series.
+      var traces = [
+        {
+          // TRACE 1: Primary series
+          name: "Project finance",
+          x: ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+          y: [4, 2, 3, 5, 6, 5, 12, 11],
+          type: "bar",
+          marker: {
+            color: "#B8CCE4",   // Light blue
+            line: { width: 0 }
+          },
+          hovertemplate: "Project finance: %{y}<extra></extra>"
+        },
+        {
+          // TRACE 2: Secondary series
+          name: "Acquisition",
+          x: ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+          y: [2, 2, 1, 6, 1, 1, 4, 9],
+          type: "bar",
+          marker: {
+            color: "#4472C4",   // Primary blue
+            line: { width: 0 }
+          },
+          hovertemplate: "Acquisition: %{y}<extra></extra>"
+        },
+        {
+          // TRACE 3: Tertiary series
+          name: "Equity investment",
+          x: ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+          y: [0, 0, 0, 0, 2, 0, 1, 0],
+          type: "bar",
+          marker: {
+            color: "#A0A0B8",   // Muted purple
+            line: { width: 0 }
+          },
+          hovertemplate: "Equity investment: %{y}<extra></extra>"
+        },
+        {
+          // TRACE 4: Accent series
+          name: "Offtake agreement",
+          x: ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024", "Q1 2025", "Q2 2025", "Q3 2025", "Q4 2025"],
+          y: [1, 1, 0, 1, 2, 3, 1, 2],
+          type: "bar",
+          marker: {
+            color: "#F5D5B0",   // Warm sand
+            line: { width: 0 }
+          },
+          hovertemplate: "Offtake agreement: %{y}<extra></extra>"
+        }
+      ];
+
+      // ── LAYOUT ───────────────────────────────────────────
+      var layout = {
+
+        // TITLE: Use <b> for bold, <br><span> for subtitle
+        title: {
+          text: '<b>Your chart title goes here</b>' +
+                '<br><span style="font-size:13px; color:#8C8CAA;">Y-axis description (units)</span>',
+          font: { family: "DM Sans, Arial, sans-serif", size: 18, color: "#1A1A2E" },
+          x: 0.02,
+          xanchor: "left",
+          y: 0.95,
+          yanchor: "top"
+        },
+
+        // GLOBAL FONT
+        font: {
+          family: "DM Sans, Arial, sans-serif",
+          size: 12,
+          color: "#1A1A2E"
+        },
+
+        // LEGEND: horizontal, above chart
+        legend: {
+          font: { size: 11, color: "#1A1A2E" },
+          orientation: "h",
+          yanchor: "bottom",
+          y: 1.02,
+          xanchor: "left",
+          x: 0.0,
+          traceorder: "normal",
+          itemsizing: "constant",
+          bgcolor: "rgba(0,0,0,0)"
+        },
+
+        // X-AXIS
+        xaxis: {
+          tickfont: { size: 11, color: "#1A1A2E" },
+          showgrid: false,
+          showline: false,
+          tickangle: -45
+        },
+
+        // Y-AXIS: hidden labels for bar charts
+        yaxis: {
+          showgrid: false,
+          showline: false,
+          zeroline: false,
+          showticklabels: false,
+          range: [0, 26]  // Set slightly above max value
+        },
+
+        // MARGINS
+        margin: { l: 30, r: 40, t: 100, b: 100 },
+
+        // BAR SETTINGS
+        barmode: "stack",
+        bargap: 0.25,
+
+        // BACKGROUND: white everywhere
+        paper_bgcolor: "white",
+        plot_bgcolor: "white",
+
+        // DIMENSIONS
+        height: 480,
+        width: 800,
+
+        // HOVER STYLE
+        hoverlabel: {
+          bgcolor: "#1A1A2E",
+          font: { family: "DM Sans, Arial, sans-serif", size: 13, color: "white" },
+          bordercolor: "rgba(0,0,0,0)",
+          namelength: -1
+        },
+
+        // ANNOTATIONS: source line + logo + bar totals
+        annotations: [
+          // SOURCE LINE (bottom-left)
+          {
+            text: 'Source: Modo Energy' +
+                  '<br><span style="font-size:9px; color:#AAAACC;">Notes: Your notes here.</span>',
+            font: { color: "#8C8CAA", family: "DM Sans, Arial, sans-serif", size: 10 },
+            showarrow: false,
+            x: 0.0,
+            xanchor: "left",
+            xref: "paper",
+            y: -0.28,
+            yref: "paper",
+            align: "left",
+            yanchor: "bottom"
+          },
+          // LOGO (bottom-right)
+          {
+            text: '<b>M O D O E N E R G Y</b>',
+            font: { color: "#1A1A2E", family: "DM Sans, Arial, sans-serif", size: 16 },
+            showarrow: false,
+            x: 0.98,
+            xanchor: "right",
+            xref: "paper",
+            y: -0.28,
+            yref: "paper",
+            yanchor: "bottom"
+          }
+          // BAR TOTALS: add one annotation per bar for stacked totals
+          // {
+          //   text: "7",
+          //   font: { color: "#1A1A2E", family: "DM Sans, Arial, sans-serif", size: 11 },
+          //   showarrow: false,
+          //   x: "Q1 2024",
+          //   xanchor: "center",
+          //   y: 7.5,         // slightly above the total
+          //   yanchor: "bottom"
+          // }
+        ]
+      };
+
+      // ── CONFIG ───────────────────────────────────────────
+      var config = {
+        displayModeBar: false,
+        displaylogo: false,
+        responsive: true
+      };
+
+      // ── RENDER ───────────────────────────────────────────
+      Plotly.newPlot("chart", traces, layout, config);
+    </script>
+  </div>
+</body>
+</html>
