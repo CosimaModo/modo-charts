@@ -8,6 +8,7 @@ Verdian 280 MW BESS Portfolio Acquisition Italy,Acquisition,280,,Italy,Verdian,V
 OX2 Finland BESS Portfolio Financing,Project Finance,235,,Finland,OX2,Statkraft,KfW IPEX-BANK; NatWest; Nordea; SEB,,2025-12-01,Dec 2025,63.45,24.3,tolling
 Trivanta Poland PV and BESS Revolving Bridge Facility,Project Finance,8,5.5,Poland,Trivanta,,Debt fund,€17m,2025-12-01,Dec 2025,52.2297,21.0122,merchant
 Giga Storage Project Leopard Tolling Agreement,Offtake Agreement,300,4,Netherlands,Giga Storage,Vattenfall,,,2025-12-01,Dec 2025,53.3333,6.9167,tolling
+Aer Soléir Rondissone BESS Project Finance,Project Finance,250,4,Italy,Aer Soléir,,BayernLB; NordLB; Siemens Bank; CIBC; ABN AMRO,€180m,2025-12-01,Dec 2025,45.2389,7.9697,tolling
 EP Group North Baddesley BESS with GridBeyond,Offtake Agreement,50,,United Kingdom,EP Group,GridBeyond,,,2025-11-26,Nov 2025,50.9833,-1.4333,tolling
 Ganfeng Lithium Kintore BESS RTM Deal,Offtake Agreement,50,3.2,United Kingdom,Ganfeng Lithium,EDF,,,2025-11-26,Nov 2025,57.2333,-2.35,merchant
 ECO POWER TWO Schuby BESS Tolling Agreement,Offtake Agreement,104,2.3,Germany,ECO STOR GmbH,Alpiq,,,2025-11-25,Nov 2025,54.5167,9.45,tolling
@@ -23,6 +24,7 @@ ju:niz Energy 100 MWh BESS Portfolio,Project Finance,,,Germany,ju:niz Energy Gmb
 Statera Energy Carrington BESS,Project Finance,680,,United Kingdom,Statera Energy,,Lloyds; Mizuho; NatWest; Santander; SEB; Siemens Financial Services,€275m,2025-11-06,Nov 2025,53.4333,-2.3667,merchant
 Green Flexibility and Hansa Battery 500 MW BESS Portfolio Acquisition,Acquisition,500,,Germany,Hansa Battery,Green Flexibility,,,2025-11-05,Nov 2025,47.65,10.4,merchant
 SMAREG 12 Tolling Agreement,Offtake Agreement,20,2,Germany,ju:niz Energy,Next Kraftwerke (Shell),,,2025-11-01,Nov 2025,51.6239,12.3289,tolling
+Acacia BKW 200MW BESS Optimization Agreement,Offtake Agreement,200,,France,Acacia,BKW,,,2025-11-01,Nov 2025,49.5000,2.5000,tolling
 Drax acquisition of Apatura 260MW BESS portfolio,Acquisition,260,2,United Kingdom,Apatura Limited,Drax Group plc,,€184m,2025-10-30,Oct 2025,53.7833,-1.0667,hybrid
 Gruppo Futura Agrivoltaic Project with BESS,Project Finance,45,,Italy,Gruppo Futura,,Banca Ifigest; Banco di Sardegna; BPER; Monte dei Paschi; UniCredit,€46m,2025-10-21,Oct 2025,40.0,9.1,undisclosed
 Coalburn 2 BESS - 50% Stake Sale to AIP,Acquisition,500,2,United Kingdom,Alcemi,AIP Management,,,2025-10-16,Oct 2025,55.6167,-3.8333,hybrid
@@ -30,11 +32,16 @@ Return acquisition of four BESSMART battery storage sites in Eastern Germany,Acq
 SIMO BESS Project,Project Finance,100,2,Finland,AmpTank Energy,,Kommunalkredit Austria AG,,2025-10-13,Oct 2025,65.6667,25.0667,merchant
 Varco Energy Old Allen Road BESS Acquisition,Acquisition,100,,United Kingdom,Varco Energy,Varco Energy,,,2025-10-08,Oct 2025,53.796,-1.7594,merchant
 SUNCATCHER co-located PV and BESS bridge facility,Project Finance,16,1.8,Germany,SUNCATCHER,,,€12m,2025-10-06,Oct 2025,52.52,13.405,merchant
+Enfinity Global Emilia Romagna BESS Equity Investment,Equity Investment,486,4,Italy,Enfinity Global,,,,2025-10-01,Oct 2025,44.4937,11.3426,merchant
+ZE Energy Sessa Aurunca BESS Acquisition,Acquisition,100,8.4,Italy,Renew-Co Engineering,ZE Energy,,,2025-10-01,Oct 2025,41.2417,13.9350,merchant
 ADS-TEC Energy 1 GW / 2 GWh BESS Southern Germany,Project Finance,"1,000",2,Germany,ADS-TEC Energy PLC,,,,2025-09-26,Sep 2025,48.625,9.3417,merchant
 Terra One €150m Mezzanine Financing for 3GWh Germany BESS Pipeline,Project Finance,500,6,Germany,Terra One,,Aviva Investors,€150m,2025-09-18,Sep 2025,52.52,13.405,hybrid
 Kallista Energy Saleux BESS,Project Finance,120,2,France,Kallista Energy,ENGIE,BNP Paribas; Landesbank Saar,,2025-09-04,Sep 2025,49.85,2.25,tolling
 Q ENERGY Taurus B Spanish Hybrid Solar Portfolio,Project Finance,100,,Spain,Q ENERGY,,BNP Paribas; MUFG,,2025-09-03,Sep 2025,39.0,-3.0,hybrid
 Fidra Energy Thorpe Marsh BESS Project Finance,Project Finance,"1,450",2,United Kingdom,Fidra Energy,Octopus Energy,ABN AMRO; MUFG; NatWest; NordLB; Santander; Siemens Financial Services; Société Générale; CIBC; China Minsheng; Deutsche Bank; Investec; SMBC; Standard Chartered,"€1,216m",2025-09-01,Sep 2025,53.5833,-1.0667,merchant
+Kallista Energy Saleux ENGIE Optimization Agreement,Offtake Agreement,120,2,France,Kallista Energy,ENGIE,,,2025-09-01,Sep 2025,49.8500,2.2500,tolling
+Aer Soléir Rondissone EGO Energy Tolling Agreement,Offtake Agreement,250,4,Italy,Aer Soléir,EGO Energy,,,2025-09-01,Sep 2025,45.2389,7.9697,tolling
+Zelestra BKW Northern Italy 2 GWh BESS Tolling Agreement,Offtake Agreement,500,4,Italy,Zelestra,BKW,,,2025-09-01,Sep 2025,45.0000,11.0000,tolling
 Hoxter Battery Park Acquisition,Acquisition,130,2.7,Germany,SMA Altenso GmbH,MEAG,,,2025-08-27,Aug 2025,51.775,9.3833,undisclosed
 Harmony Energy Topco Private Capital Fundraise,Equity Investment,"1,000",,United Kingdom,Harmony Energy,,,€351m,2025-08-27,Aug 2025,51.128,-3.0038,merchant
 Green Genius Izabelinė and Lieponys Solar+BESS Projects,Project Finance,18,,Lithuania,Green Genius,,NordLB; Nordic Investment Bank,€64m,2025-08-19,Aug 2025,54.6833,25.2,undisclosed
@@ -43,12 +50,16 @@ BESS Waltershausen,Project Finance,10,2.2,Germany,Tauber Energy GmbH,,Deutsche K
 Shetland Standby Project - Lerwick BESS,Project Finance,68,,United Kingdom,Zenobē,,Syndicate of energy transition lenders,€70m,2025-07-30,Jul 2025,60.155,-1.145,merchant
 DB Energie-EVB Beckum BESS Flexibility Agreement,Offtake Agreement,20,2.8,Germany,Energieversorgung Beckum,DB Energie,,,2025-07-24,Jul 2025,51.7547,8.0406,tolling
 Förderstedt 300 MW Battery Storage Project,Project Finance,300,2.4,Germany,Eco Stor,,,€250m,2025-07-14,Jul 2025,51.9333,11.6167,merchant
+ContourGlobal Vexuvo 1.5 GW Italian BESS Portfolio Acquisition,Acquisition,"1,500",,Italy,Vexuvo,ContourGlobal,,,2025-07-10,Jul 2025,41.9028,12.4964,merchant
 Luxcara Waltrop BESS Acquisition,Acquisition,520,2,Germany,BKW,Luxcara,,,2025-07-02,Jul 2025,51.6167,7.4,merchant
 Giga Albatross BESS Acquisition,Acquisition,350,4,Germany,Giga Storage,InfraVia Capital Partners,,€300m,2025-07-01,Jul 2025,52.2333,7.3667,merchant
+ContourGlobal Southern Italy 98MW BESS Acquisition,Acquisition,98,,Italy,,ContourGlobal,,,2025-07-01,Jul 2025,40.5000,16.5000,merchant
+ENGIE Recurrent Energy 200MW Italian BESS Acquisition,Acquisition,200,,Italy,Recurrent Energy,ENGIE,,,2025-07-01,Jul 2025,40.5539,17.7175,undisclosed
 EWR AG Worms 30 MW Battery Storage Project,Project Finance,30,,Germany,EWR AG Worms,,IKB,,2025-06-23,Jun 2025,49.6328,8.3567,merchant
 Econergy Brandenburg BESS Acquisition,Acquisition,100,2,Germany,Econergy Renewable Energy,Econergy Renewable Energy,,€73m,2025-06-12,Jun 2025,51.525,14.0,merchant
 GIGA Leopard Battery Storage Project,Project Finance,300,4,Netherlands,GIGA Storage,,8 European lenders; Club of 8 European lenders; Santander CIB,€300m,2025-06-02,Jun 2025,53.3333,6.9167,hybrid
 Energix Polska Nowe Czarnowo I & II BESS Project Finance,Project Finance,24,2.3,Poland,Axpo Polska,,Santander Bank Polska,€25m,2025-06-01,Jun 2025,53.25,14.55,hybrid
+Eren Industries Acacia Green Tower French BESS JV,Equity Investment,500,,France,Acacia,Eren Industries,,,2025-06-01,Jun 2025,48.8566,2.3522,merchant
 RWE-Terralayr Virtual Battery Tolling Agreement,Offtake Agreement,50,2,Germany,Terralayr,RWE,,,2025-05-28,May 2025,52.52,13.405,tolling
 "Field UK BESS Portfolio - Whitebirk, Holmston, Drum Farm",Project Finance,125,2,United Kingdom,Field,,ING; Rabobank,€49m,2025-05-19,May 2025,51.5074,-0.1278,tolling
 Project Sophocles Solar and Battery Green Loan,Project Finance,350,4,Italy,Sunprime Holdings SRL,,European Investment Bank,€487m,2025-05-16,May 2025,41.9028,12.4964,hybrid
@@ -65,17 +76,17 @@ Eneco Dronten BESS Project Finance,Project Finance,32,4,Netherlands,FlevoBESS,,A
 ib vogt Greece Solar+Storage Portfolio Sale to Faria Renewables,Acquisition,,,Greece,ib vogt,Faria Group,,,2025-01-10,Jan 2025,39.18,22.75,undisclosed
 Return Energy APG equity investment,Equity Investment,"5,000",,Netherlands,Return Energy,APG,,€300m,2025-01-01,Jan 2025,52.3676,4.9041,hybrid
 RWE Pembroke Battery Storage FID,Project Finance,350,2,United Kingdom,RWE,,,€234m,2025-01-01,Jan 2025,51.6833,-4.9167,merchant
-Harmony Energy 200MW BESS Sale to EDF Renewables Polska,Acquisition,200,2.0,Poland,Harmony Energy,EDF Renewables Polska,,,2024-12-12,Dec 2024,52.0000,20.0000,
-Nofar Energy Germany Tolling-Backed BESS,Project Finance,,,Germany,Nofar Energy,,,,2024-12-11,Dec 2024,52.6069,11.8594,tolling
 Municipality of Fyli Solar + BESS Project,Project Finance,83,3.0,Greece,Municipality of Fyli,,European Investment Bank,€165m,2024-12-20,Dec 2024,38.1000,23.6500,
 Nordic Solar Borup BESS,Project Finance,5,2.0,Denmark,Nordic Solar,,Ringkjøbing Landbobank,,2024-12-20,Dec 2024,55.4833,11.9667,
+Harmony Energy 200MW BESS Sale to EDF Renewables Polska,Acquisition,200,2.0,Poland,Harmony Energy,EDF Renewables Polska,,,2024-12-12,Dec 2024,52.0000,20.0000,
+Nofar Energy Germany Tolling-Backed BESS,Project Finance,,,Germany,Nofar Energy,,,,2024-12-11,Dec 2024,52.6069,11.8594,tolling
 EQT acquisition of ju:niz Energy,Acquisition,,,Germany,ju:niz Energy,EQT,,,2024-12-05,Dec 2024,48.1717,11.7167,merchant
 TAURON RES2LIFE Second Life Battery Storage and Solar Project,Project Finance,1,3.0,Poland,TAURON Polska Energia,,Narodowy Fundusz Ochrony Środowiska i Gospodarki Wodnej,€3m,2024-12-04,Dec 2024,50.2056,19.2750,
 Alpiq Oise BESS Acquisition,Acquisition,100,2.0,France,Harmony Energy,Alpiq,,,2024-12-04,Dec 2024,49.4000,2.4000,merchant
 Cernay-lès-Reims BESS,Project Finance,240,2.0,France,TagEnergy,,ABN AMRO; Caisse d'Épargne (CEPAC); NordLB,€100m,2024-12-03,Dec 2024,49.2500,3.9333,merchant
 Rutherglen BESS Acquisition,Acquisition,29,2.0,United Kingdom,NextPower UK ESG,NextEnergy Capital,,,2024-11-28,Nov 2024,55.8333,-4.2167,merchant
-DB Energie-Iqony Duisburg-Walsum BESS Power Storage Agreement,Offtake Agreement,35,4.0,Germany,Iqony,DB Energie,,,2024-11-15,Nov 2024,51.5167,6.7167,tolling
 S4 Energy Acquisition of Terra One 310 MW BESS Portfolio,Acquisition,310,2.0,Germany,S4 Energy,Castleton Commodities International (CCI),,,2024-11-20,Nov 2024,52.3676,4.9041,
+DB Energie-Iqony Duisburg-Walsum BESS Power Storage Agreement,Offtake Agreement,35,4.0,Germany,Iqony,DB Energie,,,2024-11-15,Nov 2024,51.5167,6.7167,tolling
 MEAG Acquisition of Metelen Battery Park,Acquisition,92.5,2.5,Germany,SMA Altenso GmbH,MEAG Munich Ergo Asset Management GmbH,,,2024-11-07,Nov 2024,52.1500,7.2167,merchant
 NW Groupe BESS Portfolio Non-Recourse Financing,Project Finance,,,France,NW Groupe,,Santander CIB; Rabobank,,2024-10-18,Oct 2024,47.4784,-0.5632,merchant
 Voltwise 56 MW BESS acquisition in Germany,Acquisition,56,2.0,Germany,Voltwise,Voltwise,,,2024-10-01,Oct 2024,51.5000,7.5000,
