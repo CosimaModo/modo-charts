@@ -1220,8 +1220,8 @@ def generate_europe_map_chart(deals, check=False):
             d.capacity = d.mw || "Undisclosed";
         });
 
-        const width = 800;
-        const height = 480;
+        const width = 700;
+        const height = 440;
 
         const projection = d3.geoMercator()
             .center([10, 52])
@@ -1232,9 +1232,10 @@ def generate_europe_map_chart(deals, check=False):
 
         const svg = d3.select("#map")
             .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .attr("viewBox", `0 0 ${width} ${height}`);
+            .attr("width", "100%")
+            .attr("height", "auto")
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .style("aspect-ratio", `${width} / ${height}`);
 
         svg.append("defs").append("clipPath")
             .attr("id", "map-clip")
@@ -1308,7 +1309,7 @@ def generate_europe_map_chart(deals, check=False):
                     const tooltipEl = document.getElementById('tooltip');
                     const tw = tooltipEl.offsetWidth;
                     let left = x + 15;
-                    if (left + tw > 800) { left = x - tw - 15; }
+                    if (left + tw > 700) { left = x - tw - 15; }
                     tooltip.style("left", left + "px").style("top", (y - 10) + "px");
                 })
                 .on("mouseout", function() {
@@ -1340,7 +1341,7 @@ def generate_europe_map_chart(deals, check=False):
         "font-size: 11px; color: #1A1A2E; }",
         "        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }",
         "        .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }",
-        "        .map-container { position: relative; min-width: 800px; }",
+        "        .map-container { position: relative; max-width: 700px; }",
         "        .chart-footer {",
         "            padding: 8px 20px 12px;",
         "            display: flex;",
@@ -1356,7 +1357,7 @@ def generate_europe_map_chart(deals, check=False):
         "            letter-spacing: 4px;",
         "            white-space: nowrap;",
         "        }",
-        "        svg { display: block; }",
+        "        svg { display: block; width: 100%; height: auto; }",
         "        .country { stroke: white; stroke-width: 0.8px; }",
         "        .country-deal { fill: #D6DFED; }",
         "        .country-no-deal { fill: #EDEDF0; }",
