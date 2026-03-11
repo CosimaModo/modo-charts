@@ -557,6 +557,7 @@ def generate_deal_types_chart(data, check=False):
         subtitle="Number of deals by type, Q1 2024 \u2013 Q4 2025",
         traces=traces,
         layout=layout,
+        notes="Notes: Only publicly disclosed transactions are counted. Offtake agreements are counted only as standalone deals; agreements bundled within project finance transactions are not double-counted.",
     )
     out_path = SCRIPT_DIR / "deal-types-2025.html"
     out_path.write_text(html, encoding="utf-8")
