@@ -1221,11 +1221,11 @@ def generate_europe_map_chart(deals, check=False):
         });
 
         const width = 700;
-        const height = 440;
+        const height = 360;
 
         const projection = d3.geoMercator()
-            .center([10, 52])
-            .scale(600)
+            .center([12, 51])
+            .scale(620)
             .translate([width / 2 - 20, height / 2]);
 
         const path = d3.geoPath().projection(projection);
