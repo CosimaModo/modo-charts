@@ -296,6 +296,8 @@ _LENDER_EXCLUDE = {
     "8 European lenders",
     "Club of 8 European lenders",
     "European Union Recovery and Resilience Fund",
+    "KKR",
+    "KKR Capital Markets Partners LLP",
 }
 
 
@@ -1090,12 +1092,12 @@ def generate_top_lenders_chart(lender_data, check=False):
         "<style>",
         _TABLE_CSS_BASE,
         "table { border-collapse:collapse; width:100%; font-size:11px; "
-        "table-layout:fixed; min-width:700px; }",
+        "table-layout:fixed; min-width:600px; }",
         "col.c-lender { width:17%; }",
         "col.c-deals  { width:5%; }",
-        "col.c-power  { width:38%; }",
+        "col.c-power  { width:40%; }",
         "col.c-energy { width:13%; }",
-        "col.c-country { width:27%; }",
+        "col.c-country { width:25%; }",
         "td { overflow:hidden; text-overflow:ellipsis; }",
         ".bar-seg { display:inline-block; min-width:2px; cursor:pointer; "
         "position:relative; }",
