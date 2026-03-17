@@ -1221,11 +1221,11 @@ def generate_europe_map_chart(deals, check=False):
         });
 
         const width = 700;
-        const height = 360;
+        const height = 500;
 
         const projection = d3.geoMercator()
-            .center([12, 51])
-            .scale(620)
+            .center([12, 56])
+            .scale(480)
             .translate([width / 2 - 20, height / 2]);
 
         const path = d3.geoPath().projection(projection);
@@ -1340,7 +1340,7 @@ def generate_europe_map_chart(deals, check=False):
         "        .legend-item { display: flex; align-items: center; gap: 5px; "
         "font-size: 11px; color: #1A1A2E; }",
         "        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }",
-        "        .chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }",
+        "        .chart-scroll { overflow: visible; }",
         "        .map-container { position: relative; max-width: 700px; }",
         "        .chart-footer {",
         "            padding: 8px 20px 12px;",
